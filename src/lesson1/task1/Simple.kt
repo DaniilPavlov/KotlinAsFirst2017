@@ -64,7 +64,7 @@ fun seconds(hours: Int, minutes: Int, seconds: Int): Int {
  * 1 сажень = 3 аршина = 48 вершков, 1 вершок = 4.445 см.
  */
 fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
-    return (sagenes*48+arshins*(48.0/3.0)+vershoks)*0.04445
+    return (sagenes * 48 + arshins * 16 + vershoks) * 0.04445
 }
 
 /**
@@ -74,7 +74,7 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
  * Вывести значение того же угла в радианах (например, 0.63256).
  */
 fun angleInRadian(grad: Int, min: Int, sec: Int): Double {
-    return (grad + min/60.0 + sec / 3600.0) * PI / 180
+    return (grad + min / 60.0 + sec / 3600.0) * PI / 180
 }
 
 /**
@@ -94,7 +94,7 @@ fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double {
  * Определить третью цифру справа в этом числе (в данном случае 8).
  */
 fun thirdDigit(number: Int): Int {
-    return (number/100)%10
+    return (number / 100) % 10
 }
 
 /**
@@ -105,7 +105,7 @@ fun thirdDigit(number: Int): Int {
  * Определите время поезда в пути в минутах (в данном случае 216).
  */
 fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minutesArrive: Int): Int {
-    return hoursArrive*60+minutesArrive-hoursDepart*60-minutesDepart
+    return hoursArrive * 60 + minutesArrive - hoursDepart * 60 - minutesDepart
 }
 
 /**
@@ -116,9 +116,9 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
 fun accountInThreeYears(initial: Int, percent: Int): Double {
-    return initial*(1+percent/100.0)*(1+percent/100.0)*(1+percent/100.0)
+    val plus = 1 + percent / 100.0
+    return initial * pow(plus, 3.0)
 }
-
 /**
  * Простая
  *
@@ -126,8 +126,8 @@ fun accountInThreeYears(initial: Int, percent: Int): Double {
  *Необходимо вывести число, полученное из заданного перестановкой цифр в обратном порядке (например, 874).
  */
 fun numberRevert(number: Int): Int {
-    val x1=number%10*100
-    val x2=number%100/10*10
-    val x3=number/100
-    return x3+x2+x1
+    val x1 = number % 10 * 100
+    val x2 = number % 100 / 10 * 10
+    val x3 = number / 100
+    return x3 + x2 + x1
 }
