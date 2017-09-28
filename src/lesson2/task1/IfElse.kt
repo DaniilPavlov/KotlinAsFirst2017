@@ -2,6 +2,7 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
+import java.lang.Math.*
 /**
  * Пример
  *
@@ -70,10 +71,12 @@ fun timeForHalfWay(t1: Double, v1: Double,
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int {
-    return if((kingX == rookX1 || kingY == rookY1)&&(kingX == rookX2 || kingY == rookY2)) 3
-    else if(kingX == rookX1 || kingY == rookY1) 1
-    else if(kingX == rookX2 || kingY == rookY2) 2
-    else 0
+    return when{
+    ((kingX == rookX1 || kingY == rookY1) && (kingX == rookX2 || kingY == rookY2)) -> 3
+    (kingX == rookX1 || kingY == rookY1) -> 1
+    (kingX == rookX2 || kingY == rookY2) -> 2
+    else -> 0
+    }
 }
 
 /**
@@ -90,12 +93,12 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
                           bishopX: Int, bishopY: Int): Int {
     // угроза от слона будет в том случае, если модули разности координат по Х и по У будут равны
-    return if((rookX == kingX || rookY == kingY) && (kingX - bishopX == kingY - bishopY || kingX - bishopX == -(kingY - bishopY))) 3
-    else
-        if(kingX - bishopX == kingY - bishopY || kingX - bishopX == -(kingY - bishopY)) 2
-    else
-        if(kingX == rookX || kingY == rookY) 1
-        else 0
+    return when {
+        ((rookX == kingX || rookY == kingY) && (abs(kingX - bishopX) == abs(kingY - bishopY))) -> 3
+        (abs(kingX - bishopX) == abs(kingY - bishopY)) -> 2
+        (kingX == rookX || kingY == rookY) -> 1
+        else -> 0
+    }
 }
 
 /**
@@ -107,12 +110,18 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int{
-    if((a + b < c) || (a + c < b) || (b + c < a)) return -1
-    else
-        if(( a * a == b * b + c * c) || (b * b == a * a + c * c) || (c * c == a * a + b * b)) return 1
-        else
-            if((a * a > b * b + c * c) || (b * b > a * a + c * c) || (c * c > a * a + b * b)) return 2
-                else  return 0
+    return when{
+        (a + b < c) -> -1
+        (a + c < b) -> -1
+        (b + c < a) -> -1
+        ( a * a == b * b + c * c) -> 1
+        (b * b == a * a + c * c) -> 1
+        (c * c == a * a + b * b) -> 1
+        (a * a > b * b + c * c) -> 2
+        (b * b > a * a + c * c) -> 2
+        (c * c > a * a + b * b) -> 2
+        else  -> 0
+    }
 }
 
 
@@ -125,16 +134,14 @@ fun triangleKind(a: Double, b: Double, c: Double): Int{
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int{
-    return if((c <= a) && (d >= a) && (d <= b)) d - a
-    else
-        if((c <= a) && (d >= b)) b - a
-        else
-            if((c >= a) && (d >= a) && (d <= b)) d - c
-            else
-                if((c >= a) && (c <= b) && (d >= b)) b - c
-                else
-                    if((d >= a) && (d <= b)) d - a
-    else -1
+    return when{
+        (c <= a) && (d >= a) && (d <= b) -> d - a
+        (c <= a) && (d >= b) -> b - a
+        (c >= a) && (d >= a) && (d <= b) -> d - c
+        (c >= a) && (c <= b) && (d >= b) -> b - c
+        (d >= a) && (d <= b) -> d - a
+        else -> -1
+    }
 }
 
 
