@@ -67,7 +67,7 @@ fun digitNumber(n: Int): Int {
     var number = n
     if(number == 0) count = 1
     else
-    while(number > 0){
+    while(number != 0){
         count ++
         number /= 10
     }
@@ -120,10 +120,10 @@ fun lcm(m: Int, n: Int): Int {
 fun minDivisor(n: Int): Int{
     var i = 2
     var flag = 0
-    while((i <= 20) && (flag == 0))
+    while((i < sqrt(n.toDouble() + 1)) && (flag == 0))
         if(n % i != 0) i += 1
     else flag = 1
-    return if(i <= 20) i
+    return if(i < sqrt(n.toDouble() + 1)) i
         else n
 }
 
@@ -132,7 +132,15 @@ fun minDivisor(n: Int): Int{
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = TODO()
+fun maxDivisor(n: Int): Int {
+    var i = 2
+    var flag = 0
+    while((i < sqrt(n.toDouble() + 1)) && (flag == 0))
+        if(n % i != 0) i += 1
+        else flag = 1
+    return if(i < sqrt(n.toDouble() + 1))  n / i
+    else 1
+}
 
 /**
  * Простая
@@ -160,11 +168,15 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     var answer = false
-    var number : Double
-    for(i in m ..n ){
-        if(sqrt(i.toDouble()) % 1.0 == 0.0) answer = true
-    }
-  return answer
+    var SQRM = sqrt(m.toDouble())
+    var SQRN = sqrt(n.toDouble())
+    var SQRMROUND = SQRM.toInt()
+    var SQRNROUND = SQRN.toInt()
+    if(SQRM % 1.0 == 0.0) answer = true
+    if(SQRN % 1.0 == 0.0) answer = true
+    if(SQRN % 1.0 != 0.0) SQRNROUND += 1
+    if(SQRNROUND - SQRMROUND > 1) answer = true
+    return answer
 }
 
 /**
@@ -211,35 +223,15 @@ fun revert(n: Int): Int{
  */
 fun isPalindrome(n: Int): Boolean {
     var number = n
-    var flagfalse = 0
-    var flagtrue = 0
-    var answer = false
-    if (number < 10) answer = true
-    else {
-        var rank = 1
-        while (number > 0) {
-            rank = rank * 10
-            number = number / 10
-        }
-        rank = rank / 10
-        number = n
-        while ((number > 0) && (flagfalse == 0) && (flagtrue == 0)) {
-            if (number < 10) {
-                answer = true
-                flagtrue = 1
-            } else {
-                if (number % 10 != number / rank) flagfalse = 1
-                number = (number % rank) / 10
-                rank = rank / 100
-            }
-            println(number)
-            println(flagtrue)
-        }
-        if(flagfalse == 1) answer = false
-        else
-            answer = true
+    var numberfirst: Long //reverse of number n
+    numberfirst = 0
+    while(number > 0){
+        numberfirst = 10 * numberfirst + number % 10;
+        number /= 10;
     }
-    return answer
+    number = n
+    return if (number.toLong() == numberfirst) true
+    else false
 }
 
 /**
@@ -248,7 +240,27 @@ fun isPalindrome(n: Int): Boolean {
  * Для заданного числа n определить, содержит ли оно различающиеся цифры.
  * Например, 54 и 323 состоят из разных цифр, а 111 и 0 из одинаковых.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    var number = n
+    var answer = false
+    var numbernew: Int
+    var numberlast: Int
+    if (number > 10) {
+        numberlast = number % 10
+        numbernew = number % 100 / 10
+        number = number / 100
+        while ((number > 0) && (answer == false)) {
+            if (numbernew != numberlast) answer = true
+            else {
+                numberlast = numbernew
+                numbernew = number % 10
+                number /= 10
+            }
+        }
+        if((number ==0) && (numbernew != numberlast)) answer = true
+    }
+    return answer
+}
 
 /**
  * Сложная
@@ -258,11 +270,11 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
  */
 fun squareSequenceDigit(n: Int): Int {
-    var count = 0
+    var count = 0L
     var number = 0
-    var SQR = 0
+    var SQR = 0L
     var exSum = 0
-    var divisor = 1
+    var divisor = 1L
     while(number < n){
         count += 1
         SQR = count * count
@@ -288,9 +300,9 @@ fun squareSequenceDigit(n: Int): Int {
     else
         if(n == 2) 4
     else
-            if(divisor == 0) SQR
+            if(divisor.toInt() == 0) SQR.toInt()
     else
-                SQR / divisor
+                SQR.toInt() / divisor.toInt()
 }
 
 /**
