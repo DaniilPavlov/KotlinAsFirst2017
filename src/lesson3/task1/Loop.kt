@@ -186,7 +186,23 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun sin(x: Double, eps: Double): Double = TODO ()
+fun sin(x: Double, eps: Double): Double {
+    var answer: Double
+    var sinus: Double
+    var count: Int
+    if(eps >= 1) answer = 0.0
+    else{
+        answer = 0.0
+        sinus = 0.0
+        count = 1
+        while(abs(sinus) > eps){
+            count += 1
+            sinus = -sinus * x * x * x/ ((2 * count - 1) * (2 * count));
+            answer = answer + sinus
+        }
+    }
+    return answer
+}
 
 /**
  * Средняя
@@ -195,7 +211,23 @@ fun sin(x: Double, eps: Double): Double = TODO ()
  * cos(x) = 1 - x^2 / 2! + x^4 / 4! - x^6 / 6! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    var answer: Double
+    var cosinus: Double
+    var count: Int
+    if(eps >= 1) answer = 1.0
+    else{
+        answer = 1.0
+        cosinus = 1.0
+        count = 0
+        while(abs(cosinus) > eps){
+            count += 1
+            cosinus = -cosinus * x * x / ((2 * count - 1) * (2 * count));
+            answer = answer + cosinus
+        }
+    }
+    return answer
+}
 
 
 /**
@@ -296,13 +328,9 @@ fun squareSequenceDigit(n: Int): Int {
         divisor /= 10
         number += 1
     }
-    return if(n == 1) 1
+    return if(divisor.toInt() == 0) SQR.toInt()
     else
-        if(n == 2) 4
-    else
-            if(divisor.toInt() == 0) SQR.toInt()
-    else
-                SQR.toInt() / divisor.toInt()
+        SQR.toInt() / divisor.toInt()
 }
 
 /**
@@ -312,5 +340,36 @@ fun squareSequenceDigit(n: Int): Int {
  * 1123581321345589144...
  * Например, 2-я цифра равна 1, 9-я 2, 14-я 5.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var count = 0
+    var number = 0
+    var exSum = 0
+    var FIB = 0L
+    var divisor = 1L
+    while(number < n){
+        count += 1
+        FIB = fib(count).toLong()
+        exSum = 0
+        while(FIB > 0){
+            FIB /= 10
+            exSum += 1
+        }
+        FIB = fib(count).toLong()
+        number = number + exSum
+    }
+    number = number - exSum
+    while(exSum > 0){
+        divisor = divisor * 10
+        exSum -= 1
+    }
+    while(number != n){
+        FIB = FIB % divisor
+        divisor /= 10
+        number += 1
+        println(FIB)
+    }
+    return if(divisor.toInt() == 0) FIB.toInt()
+    else
+        FIB.toInt() / divisor.toInt()
+}
 
