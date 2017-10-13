@@ -113,17 +113,17 @@ fun dateDigitToStr(digital: String): String {
         if(parts.size == 3) {
             for (part in parts) {
                 if (point == 1) {
-                    if (part.toInt() in (1..1000000)) date += part.toInt().toString()
+                    if (part.toInt() in (1..10000000000)) date += part.toInt().toString()
                 }
                 if (point == 2) {
-                    if ((part.toInt() in (1..1000000)) && (part.toInt() <= 12) && (part.toInt() > 0)) {
+                    if ((part.toInt() in (1..10000000000)) && (part.toInt() <= 12) && (part.toInt() > 0)) {
                         if (part.length == 2) date += months[part.toInt() - 1]
                         else date += "0" + months[part.toInt() - 1]
                     }
                     else flag = 1
                 }
                 if (point == 3) {
-                    if ((part.toInt() in (1..1000000)) && (part.toInt() >= 10)) date += part
+                    if ((part.toInt() in (1..10000000000)) && (part.toInt() >= 10)) date += part
                 }
                 date += " "
                 point += 1
@@ -169,7 +169,7 @@ fun bestLongJump(jumps: String): Int {
     try {
             for (part in parts) {
                 if(part in tryes == false) {
-                    if (part.toInt() in (1..1000000)) {
+                    if (part.toInt() in (1..10000000000)) {
                         if (part.toInt() > max) {
                             max = part.toInt()
                         }
@@ -208,7 +208,7 @@ fun bestHighJump(jumps: String): Int = TODO()
  */
 fun plusMinus(expression: String): Int {
     val parts = expression.split(" ")
-    var sum = 0
+    var sum = 0L
     var point = 1
     var flag = 0
     var znak = 1
@@ -216,7 +216,7 @@ fun plusMinus(expression: String): Int {
     try {
         for (part in parts) {
             if(point % 2 == 1) {
-                if (part.toInt() in (0..1000000)) {
+                if (part.toInt() in (0..1000000000)) {
                     sum += part.toInt() * znak
                 }
             }
@@ -231,7 +231,7 @@ fun plusMinus(expression: String): Int {
     } catch (e: NumberFormatException) {
         throw illegal
     }
-    return if(flag == 0) sum
+    return if(flag == 0) sum.toInt()
     else throw illegal
 }
 
