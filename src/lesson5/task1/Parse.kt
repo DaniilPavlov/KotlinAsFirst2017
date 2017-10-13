@@ -80,11 +80,11 @@ fun dateStrToDigit(str: String): String {
                     if (months.indexOf(word) < 10) date += "0" + (months.indexOf(word) + 1).toString()
                     else date += (months.indexOf(word)+1).toString()
                 } else
-                    if((part.toInt() in (1..1000000)) && (part.toInt() >= 10)) date += part
+                    if((part.toInt() in (1..10000000000)) && (part.toInt() >= 10)) date += part
                     else
-                        if((part.toInt() in (1..1000000)) && (part.toInt() < 10)) date += "0" + part
+                        if((part.toInt() in (1..10000000000)) && (part.toInt() < 10)) date += "0" + part
                         else
-                            if((part.toInt() in (1..1000000) == false) && (part in months)) flag = 1
+                            if((part.toInt() in (1..10000000000) == false) && (part in months)) flag = 1
                 date += "."
             }
             date = date.substring(0, date.length - 1)
@@ -123,7 +123,7 @@ fun dateDigitToStr(digital: String): String {
                     else flag = 1
                 }
                 if (point == 3) {
-                    if ((part.toInt() in (1..10000000000)) && (part.toInt() >= 10)) date += part
+                    if (part.toInt() in (1..10000000000)) date += part
                 }
                 date += " "
                 point += 1
@@ -216,7 +216,7 @@ fun plusMinus(expression: String): Int {
     try {
         for (part in parts) {
             if(point % 2 == 1) {
-                if (part.toInt() in (0..1000000000)) {
+                if (part.toInt() in (0..10000000000)) {
                     sum += part.toInt() * znak
                 }
             }
