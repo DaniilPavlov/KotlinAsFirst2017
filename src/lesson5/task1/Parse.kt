@@ -66,7 +66,35 @@ fun main(args: Array<String>) {
  * День и месяц всегда представлять двумя цифрами, например: 03.04.2011.
  * При неверном формате входной строки вернуть пустую строку
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val months = listOf<String>("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
+    var date = ""
+    var flag = 0
+    var word = ""
+    val parts = str.split(" ")
+    try {
+        if(parts.size == 3) {
+            for (part in parts) {
+                if(part in months == true) {
+                    word = part
+                    if (months.indexOf(word) < 10) date += "0" + (months.indexOf(word) + 1).toString()
+                    else date += (months.indexOf(word)+1).toString()
+                } else
+                    if((part.toInt() in (1..1000000)) && (part.toInt() >= 10)) date += part
+                    else
+                        if((part.toInt() in (1..1000000)) && (part.toInt() < 10)) date += "0" + part
+                        else
+                            if((part.toInt() in (1..1000000) == false) && (part in months)) flag = 1
+                date += "."
+            }
+            date = date.substring(0, date.length - 1)
+        } else flag = 1
+    } catch (e: NumberFormatException) {
+        flag = 1
+    }
+    return if(flag == 0) date
+    else ""
+}
 
 /**
  * Средняя
@@ -75,7 +103,39 @@ fun dateStrToDigit(str: String): String = TODO()
  * Перевести её в строковый формат вида "15 июля 2016".
  * При неверном формате входной строки вернуть пустую строку
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val months = listOf<String>("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
+    var date = ""
+    var flag = 0
+    var point = 1
+    val parts = digital.split(".")
+    try {
+        if(parts.size == 3) {
+            for (part in parts) {
+                if (point == 1) {
+                    if (part.toInt() in (1..1000000)) date += part.toInt().toString()
+                }
+                if (point == 2) {
+                    if ((part.toInt() in (1..1000000)) && (part.toInt() <= 12) && (part.toInt() > 0)) {
+                        if (part.length == 2) date += months[part.toInt() - 1]
+                        else date += "0" + months[part.toInt() - 1]
+                    }
+                    else flag = 1
+                }
+                if (point == 3) {
+                    if ((part.toInt() in (1..1000000)) && (part.toInt() >= 10)) date += part
+                }
+                date += " "
+                point += 1
+            }
+            date = date.substring(0, date.length - 1)
+        } else flag = 1
+    } catch (e: NumberFormatException) {
+        flag = 1
+    }
+    return if(flag == 0) date
+    else ""
+}
 
 /**
  * Средняя
@@ -101,7 +161,29 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    val tryes = listOf<String>("-", "%")
+    val parts = jumps.split(" ")
+    var flag = 0
+    var max = 0
+    try {
+            for (part in parts) {
+                if(part in tryes == false) {
+                    if (part.toInt() in (1..1000000)) {
+                        if (part.toInt() > max) {
+                            max = part.toInt()
+                        }
+                    }
+                }
+                else
+                    if(part in tryes == false) flag = 1
+            }
+    } catch (e: NumberFormatException) {
+        flag = 1
+    }
+    return if((flag == 0) && (max != 0)) max
+    else -1
+}
 
 /**
  * Сложная
@@ -124,7 +206,34 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    val parts = expression.split(" ")
+    var sum = 0
+    var point = 1
+    var flag = 0
+    var znak = 1
+    val illegal = IllegalArgumentException()
+    try {
+        for (part in parts) {
+            if(point % 2 == 1) {
+                if (part.toInt() in (0..1000000)) {
+                    sum += part.toInt() * znak
+                }
+            }
+            if(point % 2 == 0){
+                if(part == "+") znak = 1
+                else
+                    if(part == "-") znak = -1
+                else flag = 1
+            }
+            point += 1
+        }
+    } catch (e: NumberFormatException) {
+        throw illegal
+    }
+    return if(flag == 0) sum
+    else throw illegal
+}
 
 /**
  * Сложная
