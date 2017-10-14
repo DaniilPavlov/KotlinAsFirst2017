@@ -90,7 +90,7 @@ fun dateStrToDigit(str: String): String {
                     else flag = 1
                 }
                 if (point == 3) {
-                    if (part.toInt() in 1..1000000000000000000) date += part
+                    if (part.toInt() in 0..1000000000000000000) date += part
                 }
                 date += "."
                 point += 1
@@ -174,13 +174,15 @@ fun bestLongJump(jumps: String): Int {
     val parts = jumps.split(" ")
     var flag = 0
     var max = 0
+    var point = 0
     try {
             for (part in parts) {
                 if(part != "")
                 if(part in tryes == false) {
-                    if (part.toInt() in 1..1000000000000000000) {
-                        if (part.toInt() > max) {
+                    if (part.toInt() in 0..1000000000000000000) {
+                        if (part.toInt() >= max) {
                             max = part.toInt()
+                            point = 1
                         }
                     }
                 }
@@ -190,7 +192,7 @@ fun bestLongJump(jumps: String): Int {
     } catch (e: NumberFormatException) {
         flag = 1
     }
-    return if((flag == 0) && (max != 0)) max
+    return if((flag == 0) && (point == 1)) max
     else -1
 }
 
