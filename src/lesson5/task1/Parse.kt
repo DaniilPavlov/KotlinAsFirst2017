@@ -71,22 +71,30 @@ fun dateStrToDigit(str: String): String {
     var date = ""
     var flag = 0
     var word = ""
+    var point = 1
     val parts = str.split(" ")
     try {
         if(parts.size == 3) {
             for (part in parts) {
-                if(part in months == true) {
-                    word = part
-                    if (months.indexOf(word) < 10) date += "0" + (months.indexOf(word) + 1).toString()
-                    else date += (months.indexOf(word)+1).toString()
-                } else
-                    if((part.toInt() in (1..10000000000)) && (part.toInt() >= 10)) date += part
+                if (point == 1) {
+                    if((part.toInt() in 1..1000000000000000000) && (part.toInt() >= 10)) date += part
                     else
-                        if((part.toInt() in (1..10000000000)) && (part.toInt() < 10)) date += "0" + part
-                        else
-                            if((part.toInt() in (1..10000000000) == false) && (part in months)) flag = 1
+                        if((part.toInt() in 1..1000000000000000000) && (part.toInt() < 10)) date += "0" + part.toInt().toString()
+                }
+                if (point == 2) {
+                    if(part in months == true) {
+                        word = part
+                        if (months.indexOf(word) < 10) date += "0" + (months.indexOf(word) + 1).toString()
+                        else date += (months.indexOf(word)+1).toString()
+                    }
+                    else flag = 1
+                }
+                if (point == 3) {
+                    if (part.toInt() in 1..1000000000000000000) date += part
+                }
                 date += "."
-            }
+                point += 1
+                }
             date = date.substring(0, date.length - 1)
         } else flag = 1
     } catch (e: NumberFormatException) {
@@ -113,17 +121,17 @@ fun dateDigitToStr(digital: String): String {
         if(parts.size == 3) {
             for (part in parts) {
                 if (point == 1) {
-                    if (part.toInt() in (1..10000000000)) date += part.toInt().toString()
+                    if (part.toInt() in 1..1000000000000000000) date += part.toInt().toString()
                 }
                 if (point == 2) {
-                    if ((part.toInt() in (1..10000000000)) && (part.toInt() <= 12) && (part.toInt() > 0)) {
+                    if ((part.toInt() in 1..1000000000000000000) && (part.toInt() <= 12) && (part.toInt() > 0)) {
                         if (part.length == 2) date += months[part.toInt() - 1]
                         else date += "0" + months[part.toInt() - 1]
                     }
                     else flag = 1
                 }
                 if (point == 3) {
-                    if (part.toInt() in (1..10000000000)) date += part
+                    if (part.toInt() in 0..1000000000000000000) date += part
                 }
                 date += " "
                 point += 1
@@ -168,15 +176,16 @@ fun bestLongJump(jumps: String): Int {
     var max = 0
     try {
             for (part in parts) {
+                if(part != "")
                 if(part in tryes == false) {
-                    if (part.toInt() in (1..10000000000)) {
+                    if (part.toInt() in 1..1000000000000000000) {
                         if (part.toInt() > max) {
                             max = part.toInt()
                         }
                     }
                 }
                 else
-                    if(part in tryes == false) flag = 1
+                    if((part in tryes == false) && (part != " ")) flag = 1
             }
     } catch (e: NumberFormatException) {
         flag = 1
@@ -216,7 +225,7 @@ fun plusMinus(expression: String): Int {
     try {
         for (part in parts) {
             if(point % 2 == 1) {
-                if (part.toInt() in (0..10000000000)) {
+                if (part.toInt() in 1..1000000000000000000) {
                     sum += part.toInt() * znak
                 }
             }
