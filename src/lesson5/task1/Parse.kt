@@ -288,7 +288,8 @@ fun firstDuplicateIndex(str: String): Int {
             number1 = number2
         }
     }
-    return if((leng == 0) && (str[0].toString() != " ")) 0
+    return if(str == "") -1
+    else if((leng == 0) && (str[0].toString() != " ")) 0
     else if(leng != str.length + 1) leng - number1.length - 1
     else -1
 }
@@ -311,7 +312,6 @@ fun mostExpensive(description: String): String {
     var maxname = ""
     var prename = ""
     var point = 1
-    var flag = 0
     var peremen = ""
     try {
         for (part in parts) {
