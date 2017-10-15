@@ -84,7 +84,7 @@ fun dateStrToDigit(str: String): String {
                 if (point == 2) {
                     if(part in months == true) {
                         word = part
-                        if (months.indexOf(word) < 10) date += "0" + (months.indexOf(word) + 1).toString()
+                        if (months.indexOf(word) < 9) date += "0" + (months.indexOf(word) + 1).toString()
                         else date += (months.indexOf(word)+1).toString()
                     }
                     else flag = 1
@@ -174,7 +174,7 @@ fun flattenPhoneNumber(phone: String): String {
     catch (e: NumberFormatException) {
         answer = ""
     }
-    return if(flag == 0) answer
+    return if((flag == 0) && (answer != "+")) answer
     else ""
 }
 
@@ -287,9 +287,8 @@ fun firstDuplicateIndex(str: String): Int {
             leng += part.length + 1
             number1 = number2
         }
-        println(leng)
     }
-    return if(leng == 0) 0
+    return if((leng == 0) && (str[0].toString() != " ")) 0
     else if(leng != str.length + 1) leng - number1.length - 1
     else -1
 }
