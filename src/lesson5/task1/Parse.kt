@@ -157,7 +157,26 @@ fun dateDigitToStr(digital: String): String {
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    var answer = ""
+    var flag = 0
+    val flags = listOf<String>("+", " ", "-", "(", ")")
+    try {
+        for (i in 0..phone.length - 1) {
+            if(phone[i].toString() in ("0".."9") == true) {
+                answer += phone[i].toString()
+            }else
+                if(phone[i].toString() == "+") answer += "+"
+                else
+                if(phone[i].toString() in flags == false) flag = 1
+        }
+    }
+    catch (e: NumberFormatException) {
+        answer = ""
+    }
+    return if(flag == 0) answer
+    else ""
+}
 
 /**
  * Средняя
@@ -255,7 +274,25 @@ fun plusMinus(expression: String): Int {
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    val parts = str.split(" ")
+    var number1 = ""
+    var number2 = ""
+    var leng = 0
+    for (part in parts) {
+        number2 = part.toLowerCase()
+        if (number2 == number1) {
+            break
+        } else {
+            leng += part.length + 1
+            number1 = number2
+        }
+        println(leng)
+    }
+    return if(leng == 0) 0
+    else if(leng != str.length + 1) leng - number1.length - 1
+    else -1
+}
 
 /**
  * Сложная
@@ -268,7 +305,39 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть положительными
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    val parts = description.split(";")
+    var max = 0.0
+    var premax = 0.0
+    var maxname = ""
+    var prename = ""
+    var point = 1
+    var flag = 0
+    var peremen = ""
+    try {
+        for (part in parts) {
+            var nextparts = part.trim().split(" ")
+            for (nextpart in nextparts) {
+                if (point % 2 == 1) {
+                    prename = nextpart
+                }
+                if (point % 2 == 0) {
+                    premax = nextpart.toDouble()
+                    if (premax > max) {
+                        max = premax
+                        maxname = prename
+                    }
+                }
+                point += 1
+                println(prename)
+            }
+        }
+    }
+     catch (e: NumberFormatException) {
+         maxname = ""
+    }
+    return maxname
+}
 
 /**
  * Сложная
