@@ -1,6 +1,7 @@
 @file:Suppress("UNUSED_PARAMETER")
 
 package lesson3.task1
+
 import java.lang.Math.*
 
 /**
@@ -11,7 +12,7 @@ import java.lang.Math.*
 fun factorial(n: Int): Double {
     var result = 1.0
     for (i in 1..n) {
-        result = result * i // Please do not fix in master
+        result *= i // Please do not fix in master
     }
     return result
 }
@@ -65,12 +66,12 @@ fun digitCountInNumber(n: Int, m: Int): Int =
 fun digitNumber(n: Int): Int {
     var count = 0
     var number = n
-    if(number == 0) count = 1
+    if (number == 0) count = 1
     else
-    while(number != 0){
-        count ++
-        number /= 10
-    }
+        while (number != 0) {
+            count++
+            number /= 10
+        }
     return count
 }
 
@@ -84,12 +85,12 @@ fun fib(n: Int): Int {
     var last = 1
     var prelast = 1
     var X: Int
-    if(n == 1) last = 1
-    if(n == 2) last = 1
-    if(n > 2){
+    if (n == 1) last = 1
+    if (n == 2) last = 1
+    if (n > 2) {
         for (i in 3..n) {
             X = last
-            last = prelast + last
+            last += prelast
             prelast = X
         }
     }
@@ -105,10 +106,10 @@ fun fib(n: Int): Int {
 fun lcm(m: Int, n: Int): Int {
     var first = m
     var second = n
-    var operation = second * first
-    while(first != second)
-        if(first > second) first -= second
-    else second -= first
+    val operation = second * first
+    while (first != second)
+        if (first > second) first -= second
+        else second -= first
     return operation / first
 }
 
@@ -117,14 +118,14 @@ fun lcm(m: Int, n: Int): Int {
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int{
+fun minDivisor(n: Int): Int {
     var i = 2
     var flag = 0
-    while((i < sqrt(n.toDouble() + 1)) && (flag == 0))
-        if(n % i != 0) i += 1
-    else flag = 1
-    return if(i < sqrt(n.toDouble() + 1)) i
-        else n
+    while ((i < sqrt(n.toDouble() + 1)) && (flag == 0))
+        if (n % i != 0) i += 1
+        else flag = 1
+    return if (i < sqrt(n.toDouble() + 1)) i
+    else n
 }
 
 /**
@@ -135,10 +136,10 @@ fun minDivisor(n: Int): Int{
 fun maxDivisor(n: Int): Int {
     var i = 2
     var flag = 0
-    while((i < sqrt(n.toDouble() + 1)) && (flag == 0))
-        if(n % i != 0) i += 1
+    while ((i < sqrt(n.toDouble() + 1)) && (flag == 0))
+        if (n % i != 0) i += 1
         else flag = 1
-    return if(i < sqrt(n.toDouble() + 1))  n / i
+    return if (i < sqrt(n.toDouble() + 1)) n / i
     else 1
 }
 
@@ -152,11 +153,10 @@ fun maxDivisor(n: Int): Int {
 fun isCoPrime(m: Int, n: Int): Boolean {
     var first = m
     var second = n
-    while(first != second)
-        if(first > second) first -= second
+    while (first != second)
+        if (first > second) first -= second
         else second -= first
-    return if(first == 1) true
-    else false
+    return first == 1
 }
 
 /**
@@ -168,14 +168,14 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     var answer = false
-    var SQRM = sqrt(m.toDouble())
-    var SQRN = sqrt(n.toDouble())
-    var SQRMROUND = SQRM.toInt()
+    val SQRM = sqrt(m.toDouble())
+    val SQRN = sqrt(n.toDouble())
+    val SQRMROUND = SQRM.toInt()
     var SQRNROUND = SQRN.toInt()
-    if(SQRM % 1.0 == 0.0) answer = true
-    if(SQRN % 1.0 == 0.0) answer = true
-    if(SQRN % 1.0 != 0.0) SQRNROUND += 1
-    if(SQRNROUND - SQRMROUND > 1) answer = true
+    if (SQRM % 1.0 == 0.0) answer = true
+    if (SQRN % 1.0 == 0.0) answer = true
+    if (SQRN % 1.0 != 0.0) SQRNROUND += 1
+    if (SQRNROUND - SQRMROUND > 1) answer = true
     return answer
 }
 
@@ -186,23 +186,8 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun sin(x: Double, eps: Double): Double {
-    var answer: Double
-    var sinus: Double
-    var count: Int
-    if(eps >= 1) answer = 0.0
-    else{
-        answer = 0.0
-        sinus = 0.0
-        count = 1
-        while(abs(sinus) > eps){
-            count += 1
-            sinus = -sinus * x * x * x/ ((2 * count - 1) * (2 * count));
-            answer = answer + sinus
-        }
-    }
-    return answer
-}
+fun sin(x: Double, eps: Double): Double = TODO()
+
 
 /**
  * Средняя
@@ -212,19 +197,19 @@ fun sin(x: Double, eps: Double): Double {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun cos(x: Double, eps: Double): Double {
-    var answer: Double
     var cosinus: Double
-    var count: Int
-    if(eps >= 1) answer = 1.0
-    else{
-        answer = 1.0
-        cosinus = 1.0
-        count = 0
-        while(abs(cosinus) > eps){
-            count += 1
-            cosinus = -cosinus * x * x / ((2 * count - 1) * (2 * count));
-            answer = answer + cosinus
-        }
+    var flag = -1
+    var count = 0
+    var POW = 0.0
+    var answer = 1.0
+    val X = x * PI / 180
+    cosinus = 1.0
+    while (abs(cosinus) > eps) {
+        count += 2
+        POW += 2
+        cosinus = pow(X, POW) / factorial(count)
+        answer += cosinus * flag
+        flag *= -1
     }
     return answer
 }
@@ -236,12 +221,12 @@ fun cos(x: Double, eps: Double): Double {
  * Поменять порядок цифр заданного числа n на обратный: 13478 -> 87431.
  * Не использовать строки при решении задачи.
  */
-fun revert(n: Int): Int{
+fun revert(n: Int): Int {
     var reverse = 0
     var number = n
-    while(number > 0){
+    while (number > 0) {
         reverse = reverse * 10 + number % 10
-        number = number /10
+        number /= 10
     }
     return reverse
 }
@@ -257,13 +242,12 @@ fun isPalindrome(n: Int): Boolean {
     var number = n
     var numberfirst: Long //reverse of number n
     numberfirst = 0
-    while(number > 0){
-        numberfirst = 10 * numberfirst + number % 10;
-        number /= 10;
+    while (number > 0) {
+        numberfirst = 10 * numberfirst + number % 10
+        number /= 10
     }
     number = n
-    return if (number.toLong() == numberfirst) true
-    else false
+    return number.toLong() == numberfirst
 }
 
 /**
@@ -280,7 +264,7 @@ fun hasDifferentDigits(n: Int): Boolean {
     if (number > 10) {
         numberlast = number % 10
         numbernew = number % 100 / 10
-        number = number / 100
+        number /= 100
         while ((number > 0) && (answer == false)) {
             if (numbernew != numberlast) answer = true
             else {
@@ -289,7 +273,7 @@ fun hasDifferentDigits(n: Int): Boolean {
                 number /= 10
             }
         }
-        if((number ==0) && (numbernew != numberlast)) answer = true
+        if ((number == 0) && (numbernew != numberlast)) answer = true
     }
     return answer
 }
@@ -307,31 +291,32 @@ fun squareSequenceDigit(n: Int): Int {
     var SQR = 0L
     var exSum = 0
     var divisor = 1L
-    while(number < n){
+    while (number < n) {
         count += 1
         SQR = count * count
         exSum = 0
-        while(SQR > 0){
+        while (SQR > 0) {
             SQR /= 10
             exSum += 1
         }
         SQR = count * count
-        number = number + exSum
+        number += exSum
     }
-    number = number - exSum
-    while(exSum > 0){
-        divisor = divisor * 10
+    number -= exSum
+    while (exSum > 0) {
+        divisor *= 10
         exSum -= 1
     }
-    while(number != n){
-        SQR = SQR % divisor
+    while (number != n) {
+        SQR %= divisor
         divisor /= 10
         number += 1
     }
-    return if(divisor.toInt() == 0) SQR.toInt()
+    return if (divisor.toInt() == 0) SQR.toInt()
     else
         SQR.toInt() / divisor.toInt()
 }
+
 
 /**
  * Сложная
@@ -346,29 +331,29 @@ fun fibSequenceDigit(n: Int): Int {
     var exSum = 0
     var FIB = 0L
     var divisor = 1L
-    while(number < n){
+    while (number < n) {
         count += 1
         FIB = fib(count).toLong()
         exSum = 0
-        while(FIB > 0){
+        while (FIB > 0) {
             FIB /= 10
             exSum += 1
         }
         FIB = fib(count).toLong()
-        number = number + exSum
+        number += exSum
     }
-    number = number - exSum
-    while(exSum > 0){
-        divisor = divisor * 10
+    number -= exSum
+    while (exSum > 0) {
+        divisor *= 10
         exSum -= 1
     }
-    while(number != n){
-        FIB = FIB % divisor
+    while (number != n) {
+        FIB %= divisor
         divisor /= 10
         number += 1
         println(FIB)
     }
-    return if(divisor.toInt() == 0) FIB.toInt()
+    return if (divisor.toInt() == 0) FIB.toInt()
     else
         FIB.toInt() / divisor.toInt()
 }

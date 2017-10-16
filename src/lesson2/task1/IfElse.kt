@@ -1,8 +1,10 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson2.task1
 
 import lesson1.task1.discriminant
 import java.lang.Math.*
+
 /**
  * Пример
  *
@@ -33,7 +35,7 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int) : String {
+fun ageDescription(age: Int): String {
     return if (age % 100 in 10..20) ("$age лет")
     else if (age % 10 == 1) ("$age год")
     else if (age % 10 in 2..4) ("$age года")
@@ -50,13 +52,13 @@ fun ageDescription(age: Int) : String {
 fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
                    t3: Double, v3: Double): Double {
-    val s1 = t1 * v1;
-    val s2 = t2 * v2;
-    val s3 = t3 * v3;
+    val s1 = t1 * v1
+    val s2 = t2 * v2
+    val s3 = t3 * v3
     val sh = (s1 + s2 + s3) / 2.0 // половина всего пути
-    return if(sh <= s1) sh / v1 else
-    if((sh > s1) && (sh <= s1 + s2)) t1 + (sh - s1) / v2
-    else  t1 + t2 + (sh - s2 - s1) / v3
+    return if (sh <= s1) sh / v1 else
+        if ((sh > s1) && (sh <= s1 + s2)) t1 + (sh - s1) / v2
+        else t1 + t2 + (sh - s2 - s1) / v3
 }
 
 /**
@@ -71,11 +73,11 @@ fun timeForHalfWay(t1: Double, v1: Double,
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int {
-    return when{
-    ((kingX == rookX1 || kingY == rookY1) && (kingX == rookX2 || kingY == rookY2)) -> 3
-    (kingX == rookX1 || kingY == rookY1) -> 1
-    (kingX == rookX2 || kingY == rookY2) -> 2
-    else -> 0
+    return when {
+        ((kingX == rookX1 || kingY == rookY1) && (kingX == rookX2 || kingY == rookY2)) -> 3
+        (kingX == rookX1 || kingY == rookY1) -> 1
+        (kingX == rookX2 || kingY == rookY2) -> 2
+        else -> 0
     }
 }
 
@@ -109,18 +111,18 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int{
-    return when{
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    return when {
         (a + b < c) -> -1
         (a + c < b) -> -1
         (b + c < a) -> -1
-        ( a * a == b * b + c * c) -> 1
+        (a * a == b * b + c * c) -> 1
         (b * b == a * a + c * c) -> 1
         (c * c == a * a + b * b) -> 1
         (a * a > b * b + c * c) -> 2
         (b * b > a * a + c * c) -> 2
         (c * c > a * a + b * b) -> 2
-        else  -> 0
+        else -> 0
     }
 }
 
@@ -133,8 +135,8 @@ fun triangleKind(a: Double, b: Double, c: Double): Int{
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int{
-    return when{
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
+    return when {
         (c <= a) && (d >= a) && (d <= b) -> d - a
         (c <= a) && (d >= b) -> b - a
         (c >= a) && (d >= a) && (d <= b) -> d - c

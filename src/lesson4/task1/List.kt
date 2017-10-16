@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson4.task1
 
 import lesson1.task1.discriminant
@@ -108,10 +109,9 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * Модуль пустого вектора считать равным 0.0.
  */
 fun abs(v: List<Double>): Double {
-    var kek = v
     var sum = 0.0
-    if(kek.isEmpty() == false){
-        for(i in 0 until kek.size) sum = kek[i] * kek[i] + sum
+    if (v.isEmpty() == false) {
+        for (i in 0 until v.size) sum += v[i] * v[i]
         sum = sqrt(sum)
     }
     return sum
@@ -123,15 +123,14 @@ fun abs(v: List<Double>): Double {
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
 fun mean(list: List<Double>): Double {
-    var kek = list
     var sum = 0.0
     var count = 0
-    if(kek.isEmpty() == false){
-        for(i in 0 until kek.size) {
-            sum += kek[i]
+    if (list.isEmpty() == false) {
+        for (i in 0 until list.size) {
+            sum += list[i]
             count += 1
         }
-        sum = sum / count
+        sum /=  count
     }
     return sum
 }
@@ -145,10 +144,10 @@ fun mean(list: List<Double>): Double {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
-    var sum = mean(list)
+    val sum = mean(list)
     for (i in 0 until list.size) {
-            list[i] -= sum
-        }
+        list[i] -= sum
+    }
     return list
 }
 
@@ -161,7 +160,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  */
 fun times(a: List<Double>, b: List<Double>): Double {
     var sum = 0.0
-    for(i in 0 until b.size){
+    for (i in 0 until b.size) {
         sum += a[i] * b[i]
     }
     return sum
@@ -178,7 +177,7 @@ fun times(a: List<Double>, b: List<Double>): Double {
 fun polynom(p: List<Double>, x: Double): Double {
     var sum = 0.0
     var POWER = 1.0
-    if(p.isEmpty() == false){
+    if (p.isEmpty() == false) {
         sum = p[0]
         for (i in 1 until p.size) {
             sum += p[i] * pow(x, POWER)
@@ -200,9 +199,9 @@ fun polynom(p: List<Double>, x: Double): Double {
  */
 fun accumulate(list: MutableList<Double>): MutableList<Double> {
     var sum = 0.0
-    if(list.isEmpty() == false){
-        for(i in list.size - 1 downTo 1){
-            for(j in 0..i) sum +=list[j]
+    if (list.isEmpty() == false) {
+        for (i in list.size - 1 downTo 1) {
+            for (j in 0..i) sum += list[j]
             list[i] = sum
             sum = 0.0
         }
@@ -221,12 +220,12 @@ fun factorize(n: Int): List<Int> {
     val array = mutableListOf<Int>()
     var number = n
     var count = 2
-    while(count <= number){
-        if(number % count == 0) {
+    while (count <= number) {
+        if (number % count == 0) {
             array += count
             number /= count
         } else
-        count += 1
+            count += 1
     }
     return array.sorted()
 }
@@ -238,7 +237,7 @@ fun factorize(n: Int): List<Int> {
  * Разложить заданное натуральное число n > 1 на простые множители.
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  */
-fun factorizeToString(n: Int): String =factorize(n).joinToString(separator = "*")
+fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*")
 
 /**
  * Средняя
@@ -252,7 +251,7 @@ fun convert(n: Int, base: Int): List<Int> {
     var count = 0
     val array = mutableListOf<Int>()
     var number = n
-    if(number == 0) array += 0
+    if (number == 0) array += 0
     else {
         while (number >= sum) {
             sum *= base
@@ -268,7 +267,7 @@ fun convert(n: Int, base: Int): List<Int> {
             sum /= base
         }
     }
-            return array
+    return array
 }
 
 /**
@@ -280,19 +279,19 @@ fun convert(n: Int, base: Int): List<Int> {
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
 fun convertToString(n: Int, base: Int): String {
-        var letter = listOf<String>("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
-        var number = n
-        var ostatok = 0L
-        var stroka = ""
-        var stepen = 1L
-        var nyzhnoe = 0L
-    if(number < base) {
+    val letter = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
+    var number = n
+    var ostatok: Long
+    var stroka = ""
+    var stepen = 1L
+    var nyzhnoe: Long
+    if (number < base) {
         if (number >= 10)
             for (j in 0..25)
-                if (j == number - 10) stroka = stroka + letter[j]
+                if (j == number - 10) stroka += letter[j]
         if (number < 10) stroka = number.toString()
-    }else{
-        while (number >= stepen){
+    } else {
+        while (number >= stepen) {
             stepen *= base
             println(stepen)
         }
@@ -301,11 +300,11 @@ fun convertToString(n: Int, base: Int): String {
             ostatok = number % stepen
             nyzhnoe = (number.toLong() - ostatok) / stepen
             if (nyzhnoe >= 10) {
-                nyzhnoe = nyzhnoe - 10L
+                nyzhnoe -= 10L
                 for (j in 0..25) {
-                    if (j.toLong() == nyzhnoe) stroka = stroka + letter[j]
+                    if (j.toLong() == nyzhnoe) stroka += letter[j]
                 }
-            } else stroka = stroka + nyzhnoe.toString()
+            } else stroka += nyzhnoe.toString()
             stepen /= base
             number = ostatok.toInt()
         }
@@ -330,7 +329,7 @@ fun decimal(digits: List<Int>, base: Int): Int {
     var timesum = 0
     var flag: Int
     var POW = 1
-    for(i in 0..digits.size - 2) POW *= base
+    for (i in 0..digits.size - 2) POW *= base
     for (i in 0..digits.size - 1) {
         if (i == digits.size - 1) sum += digits[i]
         else {
@@ -357,27 +356,25 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * Например: str = "13c", base = 14 -> 250
  */
 fun decimalFromString(str: String, base: Int): Int {
-    var letter = listOf<String>("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
-    var line = str
+    val letter = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
     var sum = 0
     var cifra = 0
     var flag: Int
     var Pow = 1
-        for(i in  line.length - 1 downTo 0) {
-            if(line[i].toString() in letter == true) {
-                flag = 10
-                for (j in 0..25) {
-                    if (letter[j] == line[i].toString())
-                        cifra = flag
+    for (i in str.length - 1 downTo 0) {
+        if (str[i].toString() in letter) {
+            flag = 10
+            for (j in 0..25) {
+                if (letter[j] == str[i].toString())
+                    cifra = flag
                 flag += 1
-                }
             }
-            else{
-                cifra = line[i].toString().toInt()
-            }
-            sum += cifra * Pow
-            Pow *= base
+        } else {
+            cifra = str[i].toString().toInt()
         }
+        sum += cifra * Pow
+        Pow *= base
+    }
     return sum
 }
 
@@ -390,17 +387,16 @@ fun decimalFromString(str: String, base: Int): Int {
  * Например: 23 = XXI  II, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String {
-    var rome = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
-    var arabic = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
+    val rome = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
+    val arabic = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
     var number = n
     var i = 0
     var answer = ""
-    while(number > 0)
-        if(arabic[i] <= number){
+    while (number > 0)
+        if (arabic[i] <= number) {
             number -= arabic[i]
             answer += rome[i]
-        }
-        else i += 1
+        } else i += 1
     return answer
 }
 

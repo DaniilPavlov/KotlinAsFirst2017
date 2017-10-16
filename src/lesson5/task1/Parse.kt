@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson5.task1
 
 /**
@@ -48,12 +49,10 @@ fun main(args: Array<String>) {
         val seconds = timeStrToSeconds(line)
         if (seconds == -1) {
             println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
-        }
-        else {
+        } else {
             println("Прошло секунд с начала суток: $seconds")
         }
-    }
-    else {
+    } else {
         println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
     }
 }
@@ -67,40 +66,39 @@ fun main(args: Array<String>) {
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateStrToDigit(str: String): String {
-    val months = listOf<String>("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
+    val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
     var date = ""
     var flag = 0
-    var word = ""
+    var word: String
     var point = 1
     val parts = str.split(" ")
     try {
-        if(parts.size == 3) {
+        if (parts.size == 3) {
             for (part in parts) {
                 if (point == 1) {
-                    if((part.toInt() in 1..1000000000000000000) && (part.toInt() >= 10)) date += part
+                    if ((part.toInt() in 1..1000000000000000000) && (part.toInt() >= 10)) date += part
                     else
-                        if((part.toInt() in 1..1000000000000000000) && (part.toInt() < 10)) date += "0" + part.toInt().toString()
+                        if ((part.toInt() in 1..1000000000000000000) && (part.toInt() < 10)) date += "0" + part.toInt().toString()
                 }
                 if (point == 2) {
-                    if(part in months == true) {
+                    if (part in months) {
                         word = part
                         if (months.indexOf(word) < 9) date += "0" + (months.indexOf(word) + 1).toString()
-                        else date += (months.indexOf(word)+1).toString()
-                    }
-                    else flag = 1
+                        else date += (months.indexOf(word) + 1).toString()
+                    } else flag = 1
                 }
                 if (point == 3) {
                     if (part.toInt() in 0..1000000000000000000) date += part
                 }
                 date += "."
                 point += 1
-                }
+            }
             date = date.substring(0, date.length - 1)
         } else flag = 1
     } catch (e: NumberFormatException) {
         flag = 1
     }
-    return if(flag == 0) date
+    return if (flag == 0) date
     else ""
 }
 
@@ -112,13 +110,13 @@ fun dateStrToDigit(str: String): String {
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateDigitToStr(digital: String): String {
-    val months = listOf<String>("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
+    val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
     var date = ""
     var flag = 0
     var point = 1
     val parts = digital.split(".")
     try {
-        if(parts.size == 3) {
+        if (parts.size == 3) {
             for (part in parts) {
                 if (point == 1) {
                     if (part.toInt() in 1..1000000000000000000) date += part.toInt().toString()
@@ -127,8 +125,7 @@ fun dateDigitToStr(digital: String): String {
                     if ((part.toInt() in 1..1000000000000000000) && (part.toInt() <= 12) && (part.toInt() > 0)) {
                         if (part.length == 2) date += months[part.toInt() - 1]
                         else date += "0" + months[part.toInt() - 1]
-                    }
-                    else flag = 1
+                    } else flag = 1
                 }
                 if (point == 3) {
                     if (part.toInt() in 0..1000000000000000000) date += part
@@ -141,7 +138,7 @@ fun dateDigitToStr(digital: String): String {
     } catch (e: NumberFormatException) {
         flag = 1
     }
-    return if(flag == 0) date
+    return if (flag == 0) date
     else ""
 }
 
@@ -160,21 +157,20 @@ fun dateDigitToStr(digital: String): String {
 fun flattenPhoneNumber(phone: String): String {
     var answer = ""
     var flag = 0
-    val flags = listOf<String>("+", " ", "-", "(", ")")
+    val flags = listOf(" ", "-", "(", ")")
     try {
-        for (i in 0..phone.length - 1) {
-            if(phone[i].toString() in ("0".."9") == true) {
+        for (i in 0 until phone.length ) {
+            if (phone[i].toString() in ("0".."9")) {
                 answer += phone[i].toString()
-            }else
-                if(phone[i].toString() == "+") answer += "+"
+            } else
+                if (phone[i].toString() == "+") answer += "+"
                 else
-                if(phone[i].toString() in flags == false) flag = 1
+                    if (phone[i].toString() in flags == false) flag = 1
         }
-    }
-    catch (e: NumberFormatException) {
+    } catch (e: NumberFormatException) {
         answer = ""
     }
-    return if((flag == 0) && (answer != "+")) answer
+    return if ((flag == 0) && (answer != "+")) answer
     else ""
 }
 
@@ -189,29 +185,28 @@ fun flattenPhoneNumber(phone: String): String {
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
 fun bestLongJump(jumps: String): Int {
-    val tryes = listOf<String>("-", "%")
+    val tryes = listOf("-", "%")
     val parts = jumps.split(" ")
     var flag = 0
     var max = 0
     var point = 0
     try {
-            for (part in parts) {
-                if(part != "")
-                if(part in tryes == false) {
+        for (part in parts) {
+            if (part != "")
+                if (part in tryes == false) {
                     if (part.toInt() in 0..1000000000000000000) {
                         if (part.toInt() >= max) {
                             max = part.toInt()
                             point = 1
                         }
                     }
-                }
-                else
-                    if((part in tryes == false) && (part != " ")) flag = 1
-            }
+                } else
+                    if ((part in tryes == false) && (part != " ")) flag = 1
+        }
     } catch (e: NumberFormatException) {
         flag = 1
     }
-    return if((flag == 0) && (point == 1)) max
+    return if ((flag == 0) && (point == 1)) max
     else -1
 }
 
@@ -245,23 +240,24 @@ fun plusMinus(expression: String): Int {
     val illegal = IllegalArgumentException()
     try {
         for (part in parts) {
-            if(point % 2 == 1) {
+            if (point % 2 == 1) {
                 if (part.toInt() in 1..1000000000000000000) {
                     sum += part.toInt() * znak
                 }
             }
-            if(point % 2 == 0){
-                if(part == "+") znak = 1
-                else
-                    if(part == "-") znak = -1
-                else flag = 1
+            if (point % 2 == 0) {
+                when {
+                    part == "+" -> znak = 1
+                    part == "-" -> znak = -1
+                    else -> flag = 1
+                }
             }
             point += 1
         }
     } catch (e: NumberFormatException) {
         throw illegal
     }
-    return if(flag == 0) sum.toInt()
+    return if (flag == 0) sum.toInt()
     else throw illegal
 }
 
@@ -277,7 +273,7 @@ fun plusMinus(expression: String): Int {
 fun firstDuplicateIndex(str: String): Int {
     val parts = str.split(" ")
     var number1 = ""
-    var number2 = ""
+    var number2: String
     var leng = 0
     for (part in parts) {
         number2 = part.toLowerCase()
@@ -288,9 +284,9 @@ fun firstDuplicateIndex(str: String): Int {
             number1 = number2
         }
     }
-    return if(str == "") -1
-    else if((leng == 0) && (str[0].toString() != " ")) 0
-    else if(leng != str.length + 1) leng - number1.length - 1
+    return if (str == "") -1
+    else if ((leng == 0) && (str[0].toString() != " ")) 0
+    else if (leng != str.length + 1) leng - number1.length - 1
     else -1
 }
 
@@ -308,32 +304,29 @@ fun firstDuplicateIndex(str: String): Int {
 fun mostExpensive(description: String): String {
     val parts = description.split(";")
     var max = 0.0
-    var premax = 0.0
+    var premax: Double
     var maxname = ""
     var prename = ""
     var point = 1
-    var peremen = ""
     try {
         for (part in parts) {
-            var nextparts = part.trim().split(" ")
+            val nextparts = part.trim().split(" ")
             for (nextpart in nextparts) {
                 if (point % 2 == 1) {
                     prename = nextpart
                 }
                 if (point % 2 == 0) {
                     premax = nextpart.toDouble()
-                    if (premax > max) {
+                    if (premax >= max) {
                         max = premax
                         maxname = prename
                     }
                 }
                 point += 1
-                println(prename)
             }
         }
-    }
-     catch (e: NumberFormatException) {
-         maxname = ""
+    } catch (e: NumberFormatException) {
+        maxname = ""
     }
     return maxname
 }
