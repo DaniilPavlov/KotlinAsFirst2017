@@ -110,11 +110,9 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  */
 fun abs(v: List<Double>): Double {
     var sum = 0.0
-    if (v.isEmpty() == false) {
-        for (i in 0 until v.size) sum += v[i] * v[i]
-        sum = sqrt(sum)
-    }
-    return sum
+    for (i in v)
+        sum += i * i
+    return sqrt(sum)
 }
 
 /**
@@ -124,13 +122,10 @@ fun abs(v: List<Double>): Double {
  */
 fun mean(list: List<Double>): Double {
     var sum = 0.0
-    var count = 0
-    if (list.isEmpty() == false) {
-        for (i in 0 until list.size) {
-            sum += list[i]
-            count += 1
-        }
-        sum /=  count
+    if (list.isNotEmpty()) {
+        for (i in list)
+            sum += i
+        sum /= list.size
     }
     return sum
 }
@@ -144,10 +139,9 @@ fun mean(list: List<Double>): Double {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
-    val sum = mean(list)
-    for (i in 0 until list.size) {
-        list[i] -= sum
-    }
+    val average = mean(list)
+    for (i in 0 until list.size)
+        list[i] -= average
     return list
 }
 
@@ -160,9 +154,8 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  */
 fun times(a: List<Double>, b: List<Double>): Double {
     var sum = 0.0
-    for (i in 0 until b.size) {
+    for (i in 0 until b.size)
         sum += a[i] * b[i]
-    }
     return sum
 }
 
@@ -175,16 +168,13 @@ fun times(a: List<Double>, b: List<Double>): Double {
  * Значение пустого многочлена равно 0.0 при любом x.
  */
 fun polynom(p: List<Double>, x: Double): Double {
-    var sum = 0.0
-    var POWER = 1.0
-    if (p.isEmpty() == false) {
-        sum = p[0]
-        for (i in 1 until p.size) {
-            sum += p[i] * pow(x, POWER)
-            POWER += 1
-        }
+    var answer = 0.0
+    if (p.isNotEmpty()) {
+        answer = p[0]
+        for (i in 1 until p.size)
+            answer += p[i] * pow(x, i.toDouble())
     }
-    return sum
+    return answer
 }
 
 /**
@@ -198,15 +188,11 @@ fun polynom(p: List<Double>, x: Double): Double {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Double>): MutableList<Double> {
-    var sum = 0.0
-    if (list.isEmpty() == false) {
-        for (i in list.size - 1 downTo 1) {
-            for (j in 0..i) sum += list[j]
-            list[i] = sum
-            sum = 0.0
-        }
-    }
+    if (list.isEmpty()) return list
+    for (i in 1 until list.size)
+        list[i] += list[i - 1]
     return list
+
 }
 
 /**
@@ -217,17 +203,17 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
  * Множители в списке должны располагаться по возрастанию.
  */
 fun factorize(n: Int): List<Int> {
-    val array = mutableListOf<Int>()
+    val list = mutableListOf<Int>()
     var number = n
     var count = 2
     while (count <= number) {
         if (number % count == 0) {
-            array += count
+            list += count
             number /= count
         } else
             count += 1
     }
-    return array.sorted()
+    return list.sorted()
 }
 
 
@@ -247,27 +233,13 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
 fun convert(n: Int, base: Int): List<Int> {
-    var sum = 1
-    var count = 0
     val array = mutableListOf<Int>()
     var number = n
-    if (number == 0) array += 0
-    else {
-        while (number >= sum) {
-            sum *= base
-        }
-        sum /= base
-        while (sum > 0) {
-            while (number - sum > 0 || number == sum) {
-                count += 1
-                number -= sum
-            }
-            array += count
-            count = 0
-            sum /= base
-        }
-    }
-    return array
+    do {
+        array += number % base
+        number /= base
+    } while (number > 0)
+    return array.reversed()
 }
 
 /**
@@ -279,42 +251,15 @@ fun convert(n: Int, base: Int): List<Int> {
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
 fun convertToString(n: Int, base: Int): String {
-    val letter = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
+    val letter: List<Char> = ('a'..'z').toList()
+    val answer = mutableListOf<String>()
     var number = n
-    var ostatok: Long
-    var stroka = ""
-    var stepen = 1L
-    var nyzhnoe: Long
-    if (number < base) {
-        if (number >= 10)
-            for (j in 0..25)
-                if (j == number - 10) stroka += letter[j]
-        if (number < 10) stroka = number.toString()
-    } else {
-        while (number >= stepen) {
-            stepen *= base
-            println(stepen)
-        }
-        if (stepen != 1L) stepen /= base
-        while (number != 0) {
-            ostatok = number % stepen
-            nyzhnoe = (number.toLong() - ostatok) / stepen
-            if (nyzhnoe >= 10) {
-                nyzhnoe -= 10L
-                for (j in 0..25) {
-                    if (j.toLong() == nyzhnoe) stroka += letter[j]
-                }
-            } else stroka += nyzhnoe.toString()
-            stepen /= base
-            number = ostatok.toInt()
-        }
-        while (stepen != 0L) {
-            stepen /= base
-            stroka += "0"
-        }
-    }
-    println(stroka)
-    return stroka
+    do {
+        if (number % base > 9) answer += letter[(number % base) - 10].toString()
+        if (number % base < 10) answer += (number % base).toString()
+        number /= base
+    } while (number > 0)
+    return answer.reversed().joinToString(separator = "")
 }
 
 /**
@@ -325,25 +270,13 @@ fun convertToString(n: Int, base: Int): String {
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
 fun decimal(digits: List<Int>, base: Int): Int {
-    var sum = 0
-    var timesum = 0
-    var flag: Int
-    var POW = 1
-    for (i in 0..digits.size - 2) POW *= base
-    for (i in 0..digits.size - 1) {
-        if (i == digits.size - 1) sum += digits[i]
-        else {
-            flag = 0
-            while (flag != digits[i]) {
-                flag++
-                timesum += POW
-            }
-            sum += timesum
-            timesum = 0
-            POW /= base
-        }
+    var answer = 0
+    var power = pow(base.toDouble(), (digits.size - 1).toDouble())
+    for (i in 0 until digits.size) {
+        answer += power.toInt() * digits[i]
+        power /= base
     }
-    return sum
+    return answer
 }
 
 /**
@@ -356,24 +289,13 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * Например: str = "13c", base = 14 -> 250
  */
 fun decimalFromString(str: String, base: Int): Int {
-    val letter = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
+    val letter: List<Char> = ('a'..'z').toList()
+    var power = 1
     var sum = 0
-    var cifra = 0
-    var flag: Int
-    var Pow = 1
     for (i in str.length - 1 downTo 0) {
-        if (str[i].toString() in letter) {
-            flag = 10
-            for (j in 0..25) {
-                if (letter[j] == str[i].toString())
-                    cifra = flag
-                flag += 1
-            }
-        } else {
-            cifra = str[i].toString().toInt()
-        }
-        sum += cifra * Pow
-        Pow *= base
+        if (str[i] in letter) sum += (10 + letter.indexOf(str[i])) * power
+        else sum += str[i].toString().toInt() * power
+        power *= base
     }
     return sum
 }
