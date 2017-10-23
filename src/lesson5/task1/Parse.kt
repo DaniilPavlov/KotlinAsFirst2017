@@ -192,6 +192,7 @@ fun bestHighJump(jumps: String): Int {
     var flag = 0
     var max = 0
     var premax = 0
+    var checkAnswer = 0
     var point = 1
     try {
         for (part in parts) {
@@ -201,7 +202,10 @@ fun bestHighJump(jumps: String): Int {
                 for (i in 0 until part.length) {
                     flag = 0
                     if (part[i].toString() in tryes) {
-                        if (part[i].toString() == "+") flag = 1
+                        if (part[i].toString() == "+") {
+                            checkAnswer = 1
+                            flag = 1
+                        }
                     } else return -1
                 }
                 if ((premax >= max) && (flag == 1)) max = premax
@@ -211,7 +215,8 @@ fun bestHighJump(jumps: String): Int {
     } catch (e: NumberFormatException) {
         return -1
     }
-    return max
+    return if (checkAnswer == 1) max
+    else -1
 }
 
 
@@ -325,6 +330,7 @@ fun fromRoman(roman: String): Int {
     val arabic = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
     val number = mutableListOf<Int>()
     var answer = 0
+    if (roman == "") return -1
     try {
         for (i in 0 until roman.length)
             if (roman[i].toString() in rome)

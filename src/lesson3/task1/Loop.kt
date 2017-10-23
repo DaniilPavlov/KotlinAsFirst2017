@@ -148,7 +148,7 @@ fun isCoPrime(m: Int, n: Int): Boolean = findCommonMultiple(m, n) == 1
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    for (i in 1..sqrt(n.toDouble()).toInt()) {
+    for (i in 0..sqrt(n.toDouble()).toInt()) {
         if (i * i in m..n) return true
     }
     return false
