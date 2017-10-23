@@ -76,8 +76,8 @@ fun timeForHalfWay(t1: Double, v1: Double,
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int {
-    val king1True = (kingX == rookX1 || kingY == rookY1)
-    val king2True = (kingX == rookX2 || kingY == rookY2)
+    val king1True = kingX == rookX1 || kingY == rookY1
+    val king2True = kingX == rookX2 || kingY == rookY2
     return when {
         king1True && king2True -> 3
         king2True -> 2
@@ -101,8 +101,8 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           bishopX: Int, bishopY: Int): Int {
     val lineX = abs(kingX - bishopX)
     val lineY = abs(kingY - bishopY)
-    val trueKing = (rookX == kingX || rookY == kingY)
-    val trueLine = (lineX == lineY)
+    val trueKing = rookX == kingX || rookY == kingY
+    val trueLine = lineX == lineY
     return when {
         trueLine && trueKing -> 3
         trueLine -> 2
@@ -120,17 +120,12 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
+    val max = maxOf(a, b, c)
     return when {
-        (a + b < c) -> -1
-        (a + c < b) -> -1
-        (b + c < a) -> -1
-        (a * a == b * b + c * c) -> 1
-        (b * b == a * a + c * c) -> 1
-        (c * c == a * a + b * b) -> 1
-        (a * a > b * b + c * c) -> 2
-        (b * b > a * a + c * c) -> 2
-        (c * c > a * a + b * b) -> 2
-        else -> 0
+        2 * max > a + b + c -> -1
+        2 * max * max < a * a + b * b + c * c -> 0
+        2 * max * max == a * a + b * b + c * c -> 1
+        else -> 2
     }
 }
 

@@ -19,13 +19,13 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Четырехзначное число назовем счастливым, если сумма первых двух ее цифр равна сумме двух последних.
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
-fun forNumberHappy(number: Int): Int {
+fun findHalfOfNumber(number: Int): Int {
     val units = number % 10
     val tens = number % 100 / 10
     return tens + units
 }
 
-fun isNumberHappy(number: Int): Boolean = forNumberHappy(number) == forNumberHappy(number / 100)
+fun isNumberHappy(number: Int): Boolean = findHalfOfNumber(number) == findHalfOfNumber(number / 100)
 
 /**
  * Простая

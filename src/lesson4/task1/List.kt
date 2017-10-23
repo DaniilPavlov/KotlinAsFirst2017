@@ -121,13 +121,9 @@ fun abs(v: List<Double>): Double {
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
 fun mean(list: List<Double>): Double {
-    var sum = 0.0
-    if (list.isNotEmpty()) {
-        for (i in list)
-            sum += i
-        sum /= list.size
-    }
-    return sum
+    if (list.isEmpty())
+        return 0.0
+    return (list.sum() / list.size)
 }
 
 /**
@@ -169,11 +165,8 @@ fun times(a: List<Double>, b: List<Double>): Double {
  */
 fun polynom(p: List<Double>, x: Double): Double {
     var answer = 0.0
-    if (p.isNotEmpty()) {
-        answer = p[0]
-        for (i in 1 until p.size)
-            answer += p[i] * pow(x, i.toDouble())
-    }
+    for (i in 0 until p.size)
+        answer += p[i] * pow(x, i.toDouble())
     return answer
 }
 
@@ -271,11 +264,9 @@ fun convertToString(n: Int, base: Int): String {
  */
 fun decimal(digits: List<Int>, base: Int): Int {
     var answer = 0
-    var power = pow(base.toDouble(), (digits.size - 1).toDouble())
-    for (i in 0 until digits.size) {
-        answer += power.toInt() * digits[i]
-        power /= base
-    }
+    val values = digits.reversed()
+    for (i in digits.size - 1 downTo 0)
+        answer += values[i] * pow(base.toDouble(), i.toDouble()).toInt()
     return answer
 }
 
