@@ -339,7 +339,7 @@ fun russian(n: Int): String {
         var power = pow(10.0, length.toDouble() - 1.0).toInt()
         while (length > 0) {
             if (partOfNumber <= 19) {
-                for (i in 16..33)
+                for (i in 16..31)
                     if (partOfNumber == arabic[i]) {
                         answer += words[i] + " тысяч"
                         length = 0
@@ -350,6 +350,8 @@ fun russian(n: Int): String {
                         partOfNumber == 0 -> answer += "тысяч"
                         partOfNumber == 1 -> answer += "одна тысяча"
                         partOfNumber == 2 -> answer += "две тысячи"
+                        partOfNumber == 3 -> answer += "три тысячи"
+                        partOfNumber == 4 -> answer += "четыре тысячи"
                     }
                 length = 0
             } else {
