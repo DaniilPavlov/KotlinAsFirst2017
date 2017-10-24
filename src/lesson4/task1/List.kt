@@ -320,4 +320,83 @@ fun roman(n: Int): String {
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String {
+    val arabic = listOf(900, 800, 700, 600, 500, 400, 300, 200, 100, 90, 80, 70, 60, 50, 40, 30, 20, 19,
+            18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
+    val words = listOf("девятьсот", "восемьсот", "семьсот", "шестьсот", "пятьсот", "четыреста", "триста",
+            "двести", "сто", "девяносто", "восемьдесят", "семьдесят", "шестьдесят", "пятьдесят", "сорок", "тридцать",
+            "двадцать", "девятнадцать", "восемнадцать", "семнадцать", "шестнадцать", "пятнадцать", "четырнадцать",
+            "тринадцать", "двенадцать", "одиннадцать", "десять", "девять", "восемь", "семь", "шесть", "пять", "четыре",
+            "три", "два", "один")
+    var number = n
+    var answer = ""
+    var i: Int
+    var flag: Int
+    if (number == 0) return "ноль"
+    if (number >= 1000) {
+        var partOfNumber = number / 1000
+        var length = partOfNumber.toString().length
+        var power = pow(10.0, length.toDouble() - 1.0).toInt()
+        while (length > 0) {
+            if (partOfNumber <= 19) {
+                for (i in 16..33)
+                    if (partOfNumber == arabic[i]) {
+                        answer += words[i] + " тысяч"
+                        length = 0
+                        break
+                    }
+                if (length != 0)
+                    when {
+                        partOfNumber == 0 -> answer += "тысяч"
+                        partOfNumber == 1 -> answer += "одна тысяча"
+                        partOfNumber == 2 -> answer += "две тысячи"
+                    }
+                length = 0
+            } else {
+                val partOfPart = (partOfNumber / power) * power
+                i = 0
+                flag = 0
+                while (flag == 0) {
+                    if (partOfPart == arabic[i]) {
+                        flag = 1
+                        answer += words[i] + " "
+                    }
+                    i += 1
+                }
+                partOfNumber %= power
+                power /= 10
+            }
+            length -= 1
+        }
+        number %= 1000
+    }
+    if (number >= 100) {
+        answer += " "
+        val partOfNumber = (number / 100) * 100
+        for (i in 0..8)
+            if (partOfNumber == arabic[i]) {
+                answer += words[i]
+                break
+            }
+        number %= 100
+    }
+    if (number >= 20) {
+        answer += " "
+        val partOfNumber = (number / 10) * 10
+        for (i in 9..15)
+            if (partOfNumber == arabic[i]) {
+                answer += words[i]
+                break
+            }
+        number %= 10
+    }
+    if (number <= 19) {
+        answer += " "
+        for (i in 17..35)
+            if (number == arabic[i]) {
+                answer += words[i]
+                break
+            }
+    }
+    return answer.trim()
+}
