@@ -383,7 +383,7 @@ fun russian(n: Int): String {
     if (number >= 20) {
         answer += " "
         val partOfNumber = (number / 10) * 10
-        for (i in 9..15)
+        for (i in 9..16)
             if (partOfNumber == arabic[i]) {
                 answer += words[i]
                 break
