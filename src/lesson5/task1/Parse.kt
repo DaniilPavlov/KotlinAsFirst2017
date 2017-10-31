@@ -177,8 +177,7 @@ fun bestHighJump(jumps: String): Int {
             if (numberExpected) {
                 preMax = part.toInt()
                 numberExpected = false
-            }
-            else {
+            } else {
                 for (i in 0 until part.length) {
                     flag = 0
                     if (part[i] in emptyAttempts) {
