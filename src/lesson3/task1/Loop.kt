@@ -154,18 +154,18 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
     return false
 }
 
-fun forSinusAndCosinus(count: Int, eps: Double, answer: Double, xNeeded: Double): Double {
-    var sin1 = answer
+fun forSinusAndCosinus(counter: Int, eps: Double, initial: Double, modX: Double): Double {
+    var sin = initial
     var flag = -1
-    var count1 = count
-    var answer1 = answer
+    var count = counter
+    var answer = initial
     do {
-        count1 += 2
-        sin1 *= pow(xNeeded, 2.0) / (count1 * (count1 - 1))
-        answer1 += sin1 * flag
+        count += 2
+        sin *= pow(modX, 2.0) / (count * (count - 1))
+        answer += sin * flag
         flag *= -1
-    } while (abs(sin1) >= eps)
-    return answer1
+    } while (abs(sin) >= eps)
+    return answer
 }
 
 /**
@@ -176,10 +176,8 @@ fun forSinusAndCosinus(count: Int, eps: Double, answer: Double, xNeeded: Double)
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun sin(x: Double, eps: Double): Double {
-    val count = 1
-    val xNeeded = x % (2 * PI)
-    val answer = xNeeded
-    return forSinusAndCosinus(count, eps, answer, xNeeded)
+    val modX = x % (2 * PI)
+    return forSinusAndCosinus(1, eps, modX, modX)
 }
 
 
@@ -191,10 +189,8 @@ fun sin(x: Double, eps: Double): Double {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun cos(x: Double, eps: Double): Double {
-    val count = 0
-    val answer = 1.0
-    val xNeeded = x % (2 * PI)
-    return forSinusAndCosinus(count, eps, answer, xNeeded)
+    val modX = x % (2 * PI)
+    return forSinusAndCosinus(0, eps, 1.0, modX)
 }
 
 
@@ -231,15 +227,15 @@ fun isPalindrome(n: Int): Boolean = revert(n) == n
  */
 fun hasDifferentDigits(n: Int): Boolean {
     var number = n
-    var numeralnew = 0
-    var numeralprevious = 0
+    var numeralNew = 0
+    var numeralPrevious = 0
     if (number >= 10) {
-        numeralprevious = number % 10
-        numeralnew = number % 100 / 10
+        numeralPrevious = number % 10
+        numeralNew = number % 100 / 10
         number /= 100
         do {
-            if (numeralnew != numeralprevious) return true
-            numeralnew = number % 10
+            if (numeralNew != numeralPrevious) return true
+            numeralNew = number % 10
             number /= 10
         } while (number > 0)
     }
