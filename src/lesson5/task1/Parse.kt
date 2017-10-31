@@ -92,7 +92,7 @@ fun dateDigitToStr(digital: String): String {
     var date = ""
     val parts = digital.split(".")
     try {
-        if ((parts[1].toInt() in 1..12) && (parts.size == 3))
+        if ((parts.size == 3) && (parts[1].toInt() in 1..12))
             date += months[parts[1].toInt() - 1]
         else return ""
         return String.format("%d %s %d", parts[0].toInt(), date, parts[2].toInt())
