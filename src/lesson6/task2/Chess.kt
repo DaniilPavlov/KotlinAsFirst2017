@@ -44,6 +44,7 @@ fun square(notation: String): Square {
     val illegal = IllegalArgumentException()
     var column1: Int
     var row1: Int
+    if (notation == "") throw illegal
     if (notation[0].toString() !in chess)
         throw illegal
     else column1 = chess.indexOf(notation[0].toString()) + 1
@@ -79,11 +80,14 @@ fun square(notation: String): Square {
  * Ладья может пройти через клетку (3, 3) или через клетку (6, 1) к клетке (6, 3).
  */
 fun rookMoveNumber(start: Square, end: Square): Int {
-    return when {
-        start == end -> 0
-        start.column == end.column || start.row === end.row -> 1
-        else -> 2
+    if (start.inside() && end.inside()) {
+        return when {
+            start == end -> 0
+            start.column == end.column || start.row === end.row -> 1
+            else -> 2
+        }
     }
+    throw IllegalArgumentException()
 }
 
 /**
