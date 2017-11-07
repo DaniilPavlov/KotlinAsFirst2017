@@ -140,14 +140,13 @@ fun bestLongJump(jumps: String): Int {
     val parts = jumps.split(" ")
     var max = -1
     try {
-        for (part in parts)
-            if (part != "")
+        for (part in parts) {
+            if (part != "") {
                 if (part !in emptyAttempts) {
-                    if (part.toInt() >= max)
-                        max = part.toInt()
-                    println(part)
-                } else
-                    if ((part !in emptyAttempts) && (part != " ")) return -1
+                    if (part.toInt() >= max) max = part.toInt()
+                }
+            }
+        }
     } catch (e: NumberFormatException) {
         return -1
     }
@@ -178,14 +177,15 @@ fun bestHighJump(jumps: String): Int {
                 preMax = part.toInt()
                 numberExpected = false
             } else {
-                for (i in 0 until part.length) {
+                for (symbol in part) {
                     flag = 0
-                    if (part[i] in emptyAttempts) {
-                        if (part[i] == '+') {
+                    when {
+                        (symbol in emptyAttempts) && (symbol == '+') -> {
                             checkAnswer = 1
                             flag = 1
                         }
-                    } else return -1
+                        (symbol !in emptyAttempts) -> return -1
+                    }
                 }
                 if ((preMax >= max) && (flag == 1)) max = preMax
                 numberExpected = true
@@ -194,8 +194,7 @@ fun bestHighJump(jumps: String): Int {
     } catch (e: NumberFormatException) {
         return -1
     }
-    return if (checkAnswer == 1) max
-    else -1
+    return if (checkAnswer == 1) max else -1
 }
 
 
@@ -212,19 +211,19 @@ fun plusMinus(expression: String): Int {
     val parts = expression.split(" ")
     var sum = 0
     var point = 1
-    var character = 1
+    var sign = 1
     val illegal = IllegalArgumentException()
     try {
         for (part in parts) {
             if (point % 2 == 1)
-                sum += part.toInt() * character
+                sum += part.toInt() * sign
             if (point % 2 == 0)
-                when {
-                    part == "+" -> character = 1
-                    part == "-" -> character = -1
+                when (part) {
+                    "+" -> sign = 1
+                    "-" -> sign = -1
                     else -> throw illegal
                 }
-            point += 1
+            point++
         }
     } catch (e: NumberFormatException) {
         throw illegal
@@ -305,15 +304,15 @@ fun mostExpensive(description: String): String {
  * Вернуть -1, если roman не является корректным римским числом
  */
 fun fromRoman(roman: String): Int {
-    val rome = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
-    val arabic = listOf(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
+    val rome = listOf("M", "D", "C", "L", "X", "V", "I")
+    val arabic = listOf(1000, 500, 100, 50, 10, 5, 1)
     val number = mutableListOf<Int>()
     var answer = 0
     if (roman == "") return -1
     try {
-        for (i in 0 until roman.length)
-            if (roman[i].toString() in rome)
-                number.add(arabic[rome.indexOf(roman[i].toString())])
+        for (romani in roman)
+            if (romani.toString() in rome)
+                number.add(arabic[rome.indexOf(romani.toString())])
             else return -1
         if (number.size == 1) answer += number[0]
         else {

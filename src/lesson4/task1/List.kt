@@ -274,9 +274,8 @@ fun decimal(digits: List<Int>, base: Int): Int {
     for (i in 0 until digits.size)
         power *= base
     power /= base
-    val values = digits.reversed()
-    for (i in (digits.size - 1) downTo 0) {
-        answer += values[i] * power
+    for (digit in digits) {
+        answer += digit * power
         power /= base
     }
     return answer
