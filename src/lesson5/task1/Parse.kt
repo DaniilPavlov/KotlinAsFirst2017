@@ -180,7 +180,7 @@ fun bestHighJump(jumps: String): Int {
                 for (symbol in part) {
                     flag = 0
                     when {
-                        (symbol in emptyAttempts) && (symbol == '+') -> {
+                        (symbol == '+') -> {
                             checkAnswer = 1
                             flag = 1
                         }

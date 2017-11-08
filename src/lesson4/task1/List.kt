@@ -355,15 +355,13 @@ fun russian(n: Int): String {
         }
         if (thousandHalf == 0) answer += "тысяч "
         if (thousandHalf in 1..19) {
-            for (i in 17..35)
-                if (thousandHalf == arabic[i])
-                    when (arabic[i]) {
-                        1 -> answer += "одна тысяча" + " "
-                        2 -> answer += "две тысячи" + " "
-                        3 -> answer += "три тысячи" + " "
-                        4 -> answer += "четыре тысячи" + " "
-                        else -> answer += words[i] + " " + "тысяч" + " "
-                    }
+            when (thousandHalf) {
+                1 -> answer += "одна тысяча" + " "
+                2 -> answer += "две тысячи" + " "
+                3 -> answer += "три тысячи" + " "
+                4 -> answer += "четыре тысячи" + " "
+                else -> answer += words[arabic.indexOf(thousandHalf)] + " " + "тысяч" + " "
+            }
         }
     }
     if (hundredHalf in 100..999) {
