@@ -3,6 +3,7 @@
 package lesson6.task2
 
 import java.lang.Math.*
+import lesson6.task3.Graph
 
 /**
  * Клетка шахматной доски. Шахматная доска квадратная и имеет 8 х 8 клеток.
@@ -24,14 +25,16 @@ data class Square(val column: Int, val row: Int) {
      * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
      * Для клетки не в пределах доски вернуть пустую строку
      */
+
+
     fun notation(): String {
-        val chess: List<String> = listOf("a", "b", "c", "d", "e", "f", "g", "h")
-        if (inside() == true) {
-            return chess[column - 1] + row.toString()
-        } else return ""
+        return if (inside()) {
+            chess[column - 1] + row.toString()
+        } else ""
     }
 }
 
+val chess: List<Char> = listOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h')
 /**
  * Простая
  *
@@ -40,20 +43,16 @@ data class Square(val column: Int, val row: Int) {
  * Если нотация некорректна, бросить IllegalArgumentException
  */
 fun square(notation: String): Square {
-    val chess: List<String> = listOf("a", "b", "c", "d", "e", "f", "g", "h")
-    val illegal = IllegalArgumentException()
-    var column1: Int
-    var row1: Int
-    if (notation == "" || notation.length != 2) throw illegal
-    if (notation[0].toString() !in chess)
-        throw illegal
-    else column1 = chess.indexOf(notation[0].toString()) + 1
+    if (notation == "" || notation.length != 2) throw IllegalArgumentException("Incorrect notation")
+    if (notation[0] !in chess)
+        throw IllegalArgumentException("Incorrect notation")
+    val column = chess.indexOf(notation[0]) + 1
     try {
-        row1 = notation[1].toString().toInt()
+        val row = notation[1].toString().toInt()
+        return Square(column, row)
     } catch (e: NumberFormatException) {
-        throw illegal
+        throw IllegalArgumentException("Incorrect notation")
     }
-    return Square(column1, row1)
 }
 
 /**
@@ -83,11 +82,11 @@ fun rookMoveNumber(start: Square, end: Square): Int {
     if (start.inside() && end.inside()) {
         return when {
             start == end -> 0
-            start.column == end.column || start.row === end.row -> 1
+            start.column == end.column || start.row == end.row -> 1
             else -> 2
         }
     }
-    throw IllegalArgumentException()
+    throw IllegalArgumentException("Incorrect notation")
 }
 
 /**
@@ -105,22 +104,24 @@ fun rookMoveNumber(start: Square, end: Square): Int {
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
 fun rookTrajectory(start: Square, end: Square): List<Square> {
-    val array = mutableListOf<Square>()
-    if (start == end) array += Square(start.column, start.row)
-    else
-        if (start.column == end.column) {
-            array += Square(start.column, start.row)
-            array += Square(start.column, end.row)
-        } else
-            if (start.row === end.row) {
-                array += Square(start.column, start.row)
-                array += Square(end.column, start.row)
-            } else {
-                array += Square(start.column, start.row)
-                array += Square(end.column, start.row)
-                array += Square(end.column, end.row)
-            }
-    return array
+    val list = mutableListOf<Square>()
+    when {
+        (start == end) -> list += Square(start.column, start.row)
+        (start.column == end.column) -> {
+            list += Square(start.column, start.row)
+            list += Square(start.column, end.row)
+        }
+        (start.row == end.row) -> {
+            list += Square(start.column, start.row)
+            list += Square(end.column, start.row)
+        }
+        else -> {
+            list += Square(start.column, start.row)
+            list += Square(end.column, start.row)
+            list += Square(end.column, end.row)
+        }
+    }
+    return list
 }
 
 /**
@@ -157,7 +158,7 @@ fun bishopMoveNumber(start: Square, end: Square): Int {
                 if (abs(start.column - i) == abs(start.row - j) && abs(end.column - i) == abs(end.row - j)) return 2
         return -1
     }
-    throw IllegalArgumentException()
+    throw IllegalArgumentException("Incorrect notation")
 }
 
 /**
@@ -179,21 +180,25 @@ fun bishopMoveNumber(start: Square, end: Square): Int {
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
 fun bishopTrajectory(start: Square, end: Square): List<Square> {
-    val array = mutableListOf<Square>(start)
-    if (start == end)
-        return array
-    else
-        if (abs(start.column - end.column) == abs(start.row - end.row)) {
-            array += end
-            return array
-        } else
-            for (i in 1..8)
-                for (j in 1..8)
+    val list = mutableListOf<Square>(start)
+    when {
+        start == end -> return list
+        abs(start.column - end.column) == abs(start.row - end.row) -> {
+            list += end
+            return list
+        }
+        else -> {
+            for (i in 1..8) {
+                for (j in 1..8) {
                     if (abs(start.column - i) == abs(start.row - j) && abs(end.column - i) == abs(end.row - j)) {
-                        array += Square(i, j)
-                        array += end
-                        return array
+                        list += Square(i, j)
+                        list += end
+                        return list
                     }
+                }
+            }
+        }
+    }
     return listOf()
 }
 
@@ -218,14 +223,15 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
  * Король может последовательно пройти через клетки (4, 2) и (5, 2) к клетке (6, 3).
  */
 fun kingMoveNumber(start: Square, end: Square): Int {
-    if (start.inside() && end.inside())
+    if (start.inside() && end.inside()) {
         when {
             start == end -> return 0
             abs(start.column - end.column) > abs(start.row - end.row) -> return abs(start.column - end.column)
             abs(start.column - end.column) < abs(start.row - end.row) -> return abs(start.row - end.row)
             else -> return abs(start.column - end.column)
         }
-    throw IllegalArgumentException()
+    }
+    throw IllegalArgumentException("Incorrect notation")
 }
 
 /**
@@ -242,7 +248,73 @@ fun kingMoveNumber(start: Square, end: Square): Int {
  *          kingTrajectory(Square(3, 5), Square(6, 2)) = listOf(Square(3, 5), Square(4, 4), Square(5, 3), Square(6, 2))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun kingTrajectory(start: Square, end: Square): List<Square> = TODO()
+fun kingTrajectory(start: Square, end: Square): List<Square> {
+    val list = mutableListOf<Square>(start)
+    var columnDistance = start.column - end.column
+    var rowDistance = start.row - end.row
+    var diagonalStep = 1
+    var normalStep = 1
+    if (start == end) return list
+    while (columnDistance != 0 && rowDistance != 0) {
+        when {
+            columnDistance > 0 && rowDistance > 0 -> {
+                list += Square(start.column - diagonalStep, start.row - diagonalStep)
+                columnDistance--
+                rowDistance--
+            }
+            columnDistance > 0 && rowDistance < 0 -> {
+                list += Square(start.column - diagonalStep, start.row + diagonalStep)
+                columnDistance--
+                rowDistance++
+            }
+            columnDistance < 0 && rowDistance > 0 -> {
+                list += Square(start.column + diagonalStep, start.row - diagonalStep)
+                columnDistance++
+                rowDistance--
+            }
+            columnDistance < 0 && rowDistance < 0 -> {
+                list += Square(start.column + diagonalStep, start.row + diagonalStep)
+                columnDistance++
+                rowDistance++
+            }
+        }
+        diagonalStep++
+    }
+    diagonalStep--
+    when (0) {
+        columnDistance -> {
+            while (rowDistance != 0) {
+                when {
+                    rowDistance < 0 -> {
+                        list += Square(end.column, start.row + diagonalStep + normalStep)
+                        rowDistance++
+                    }
+                    rowDistance > 0 -> {
+                        list += Square(end.column, start.row - diagonalStep - normalStep)
+                        rowDistance--
+                    }
+                }
+                normalStep++
+            }
+        }
+        rowDistance -> {
+            while (columnDistance != 0) {
+                when {
+                    columnDistance < 0 -> {
+                        list += Square(start.column + diagonalStep + normalStep, end.row)
+                        columnDistance++
+                    }
+                    columnDistance > 0 -> {
+                        list += Square(start.column - diagonalStep - normalStep, end.row)
+                        columnDistance--
+                    }
+                }
+                normalStep++
+            }
+        }
+    }
+    return list
+}
 
 /**
  * Сложная
@@ -267,7 +339,39 @@ fun kingTrajectory(start: Square, end: Square): List<Square> = TODO()
  * Пример: knightMoveNumber(Square(3, 1), Square(6, 3)) = 3.
  * Конь может последовательно пройти через клетки (5, 2) и (4, 4) к клетке (6, 3).
  */
-fun knightMoveNumber(start: Square, end: Square): Int = TODO()
+fun knightMoveNumber(start: Square, end: Square): Int {
+    val graph = Graph()
+    if (start.inside() && end.inside()) {
+        if (start == end) return 0
+        for (i in 1..8)
+            for (j in 1..8)
+                graph.addVertex(i.toString() + j.toString())
+        for (i in 1..8) {
+            for (j in 1..8) {
+                val oneColumn = i + 1
+                val twoColumns = i + 2
+                val oneRowToUp = j + 1
+                val twoRowsToUp = j + 2
+                val oneRowToDown = j - 1
+                val twoRowsToDown = j - 2
+                if (oneColumn in 1..8 && twoRowsToUp in 1..8) {
+                    graph.connect(i.toString() + j.toString(), oneColumn.toString() + twoRowsToUp.toString())
+                }
+                if (oneColumn in 1..8 && twoRowsToDown in 1..8) {
+                    graph.connect(i.toString() + j.toString(), oneColumn.toString() + twoRowsToDown.toString())
+                }
+                if (twoColumns in 1..8 && oneRowToUp in 1..8) {
+                    graph.connect(i.toString() + j.toString(), twoColumns.toString() + oneRowToUp.toString())
+                }
+                if (twoColumns in 1..8 && oneRowToDown in 1..8) {
+                    graph.connect(i.toString() + j.toString(), twoColumns.toString() + oneRowToDown.toString())
+                }
+            }
+        }
+        return graph.bfs(start.column.toString() + start.row.toString(), end.column.toString() + end.row.toString())
+    }
+    throw IllegalArgumentException("Incorrect notation")
+}
 
 /**
  * Очень сложная

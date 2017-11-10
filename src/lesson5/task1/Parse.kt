@@ -179,12 +179,12 @@ fun bestHighJump(jumps: String): Int {
             } else {
                 for (symbol in part) {
                     flag = 0
-                    when {
-                        (symbol == '+') -> {
+                    when(symbol) {
+                        '+' -> {
                             checkAnswer = 1
                             flag = 1
                         }
-                        (symbol !in emptyAttempts) -> return -1
+                        !in emptyAttempts -> return -1
                     }
                 }
                 if ((preMax >= max) && (flag == 1)) max = preMax
