@@ -369,7 +369,7 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
             startBrackets += i
             nextStep = i + 1
             while (counter != 0) {
-                if (nextStep > commands.length - 1) throw IllegalArgumentException()
+                if (nextStep > commands.length - 1) throw IllegalArgumentException("Command out of length")
                 when (commands[nextStep]) {
                     ']' -> counter--
                     '[' -> counter++
