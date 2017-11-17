@@ -366,10 +366,9 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     var numberOfStartBrackets = 0
     for (i in 0 until cells) list.add(0)
     for (i in 0 until commands.length) {
-        if (commands[i] == ']') numberOfFinishBrackets++
-        if (commands[i] == '[') numberOfStartBrackets++
-        if ((commands[i] == ']') && (numberOfStartBrackets < numberOfFinishBrackets)) throw IllegalArgumentException("Unpaired finish bracket")
+        if (commands[i] !in symbols) throw IllegalArgumentException("Invalid command")
         if (commands[i] == '[') {
+            numberOfStartBrackets++
             counter++
             startBrackets += i
             nextStep = i + 1
@@ -383,7 +382,8 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
             }
             finishBrackets += nextStep - 1
         }
-        if (commands[i] !in symbols) throw IllegalArgumentException("Invalid command")
+        if (commands[i] == ']') numberOfFinishBrackets++
+        if ((commands[i] == ']') && (numberOfStartBrackets < numberOfFinishBrackets)) throw IllegalArgumentException("Unpaired finish bracket")
     }
     counter = 0
     var position = cells / 2
