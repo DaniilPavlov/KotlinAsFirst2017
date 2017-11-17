@@ -355,4 +355,68 @@ fun fromRoman(roman: String): Int {
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
+    val list = mutableListOf<Int>()
+    val startBrackets = mutableListOf<Int>()
+    val finishBrackets = mutableListOf<Int>()
+    val symbols = listOf('+', '-', '[', ']', ' ', '>', '<')
+    var counter = 0
+    var nextStep: Int
+    for (i in 0 until cells) list.add(0)
+    for (i in 0 until commands.length) {
+        if (commands[i] == '[') {
+            counter++
+            startBrackets += i
+            nextStep = i + 1
+            while (counter != 0) {
+                if (nextStep > commands.length - 1) throw IllegalArgumentException()
+                when (commands[nextStep]) {
+                    ']' -> counter--
+                    '[' -> counter++
+                }
+                nextStep++
+            }
+            finishBrackets += nextStep - 1
+        }
+        if (commands[i] !in symbols) throw IllegalArgumentException("Invalid command")
+    }
+    if (startBrackets.size != finishBrackets.size || (('[' !in commands) && (']' in commands)))
+        throw IllegalArgumentException("Invalid line of commands")
+    counter = 0
+    var position = cells / 2
+    var step = 0
+    var command: Char
+    while ((counter < limit) && (step < commands.length)) {
+        command = commands[step]
+        when (command) {
+            ' ' -> step++
+            '+' -> {
+                step++
+                list[position]++
+            }
+            '-' -> {
+                step++
+                list[position]--
+            }
+            '>' -> {
+                step++
+                position++
+            }
+            '<' -> {
+                step++
+                position--
+            }
+            '[' -> {
+                if (list[position] == 0) step = finishBrackets[startBrackets.indexOf(step)] + 1
+                else step++
+            }
+            ']' -> {
+                if (list[position] != 0) step = startBrackets[finishBrackets.indexOf(step)] + 1
+                else step++
+            }
+        }
+        if (position !in 0 until cells) throw IllegalStateException("Index out of the cells")
+        counter++
+    }
+    return list
+}
