@@ -362,9 +362,13 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     val symbols = listOf('+', '-', '[', ']', ' ', '>', '<')
     var counter = 0
     var nextStep: Int
+    var numberOfFinishBrackets = 0
+    var numberOfStartBrackets = 0
     for (i in 0 until cells) list.add(0)
     for (i in 0 until commands.length) {
-        if ((commands[i] == ']') && (startBrackets.isEmpty())) throw IllegalArgumentException("Unpaired finish bracket")
+        if (commands[i] == ']') numberOfFinishBrackets++
+        if (commands[i] == '[') numberOfStartBrackets++
+        if ((commands[i] == ']') && (numberOfStartBrackets < numberOfFinishBrackets)) throw IllegalArgumentException("Unpaired finish bracket")
         if (commands[i] == '[') {
             counter++
             startBrackets += i
