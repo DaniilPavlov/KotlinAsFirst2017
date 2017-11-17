@@ -364,6 +364,7 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     var nextStep: Int
     for (i in 0 until cells) list.add(0)
     for (i in 0 until commands.length) {
+        if((commands[i] == ']') && (startBrackets.isEmpty())) throw IllegalArgumentException("Unpaired finish bracket")
         if (commands[i] == '[') {
             counter++
             startBrackets += i
@@ -380,8 +381,6 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
         }
         if (commands[i] !in symbols) throw IllegalArgumentException("Invalid command")
     }
-    if (startBrackets.size != finishBrackets.size || (('[' !in commands) && (']' in commands)))
-        throw IllegalArgumentException("Invalid line of commands")
     counter = 0
     var position = cells / 2
     var step = 0
