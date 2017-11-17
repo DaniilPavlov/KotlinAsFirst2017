@@ -364,7 +364,7 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     var nextStep: Int
     for (i in 0 until cells) list.add(0)
     for (i in 0 until commands.length) {
-        if((commands[i] == ']') && (startBrackets.isEmpty())) throw IllegalArgumentException("Unpaired finish bracket")
+        if ((commands[i] == ']') && (startBrackets.isEmpty())) throw IllegalArgumentException("Unpaired finish bracket")
         if (commands[i] == '[') {
             counter++
             startBrackets += i
