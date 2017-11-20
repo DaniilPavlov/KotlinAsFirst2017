@@ -72,8 +72,7 @@ fun dateStrToDigit(str: String): String {
     val date: Int
     val parts = str.split(" ")
     if (parts.size != 3) return ""
-    if ((parts.size == 3) && (parts[1] in months)) date = (months.indexOf(parts[1]) + 1)
-    else return ""
+    if (parts[1] in months) date = (months.indexOf(parts[1]) + 1) else return ""
     return try {
         String.format("%02d.%02d.%d", parts[0].toInt(), date, parts[2].toInt())
     } catch (e: NumberFormatException) {
@@ -93,8 +92,7 @@ fun dateDigitToStr(digital: String): String {
     val parts = digital.split(".")
     if (parts.size != 3) return ""
     try {
-        if ((parts.size == 3) && (parts[1].toInt() in 1..12)) date = months[parts[1].toInt() - 1]
-        else return ""
+        if (parts[1].toInt() in 1..12) date = months[parts[1].toInt() - 1] else return ""
         return String.format("%d %s %d", parts[0].toInt(), date, parts[2].toInt())
     } catch (e: NumberFormatException) {
         return ""
@@ -137,15 +135,14 @@ fun flattenPhoneNumber(phone: String): String {
  */
 fun bestLongJump(jumps: String): Int {
     val parts = jumps.split(" ")
-    val list = parts.filter { (it != "-") && (it != "%") && (it != "") }.toList()
+    val list = parts.filter { (it != "-") && (it != "%") && (it != "") }
     var max = -1
-    for (part in list) {
+    for (part in list)
         try {
             if (part.toInt() >= max) max = part.toInt()
         } catch (e: NumberFormatException) {
             return -1
         }
-    }
     return max
 }
 
@@ -162,10 +159,8 @@ fun bestLongJump(jumps: String): Int {
 fun bestHighJump(jumps: String): Int {
     val emptyAttempts = listOf('-', '%', '+')
     val parts = jumps.split(" ")
-    var flag = 0
-    var max = 0
+    var max = -1
     var preMax = 0
-    var checkAnswer = 0
     var numberExpected = true
     val ifLineTrue = jumps.matches(Regex("""[\s\d-%+]+"""))
     if (!ifLineTrue) return -1
@@ -178,21 +173,13 @@ fun bestHighJump(jumps: String): Int {
             }
             numberExpected = false
         } else {
-            for (symbol in part) {
-                flag = 0
-                when (symbol) {
-                    '+' -> {
-                        checkAnswer = 1
-                        flag = 1
-                    }
-                    !in emptyAttempts -> return -1
-                }
-            }
-            if ((preMax >= max) && (flag == 1)) max = preMax
+            if (('+' in part) && (preMax >= max)) max = preMax
+            for (symbol in part)
+                if (symbol !in emptyAttempts) return -1
             numberExpected = true
         }
     }
-    return if (checkAnswer == 1) max else -1
+    return max
 }
 
 
@@ -240,17 +227,10 @@ fun plusMinus(expression: String): Int {
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
 fun firstDuplicateIndex(str: String): Int {
-    val parts = str.toLowerCase().split(" ")
-    var preWord = ""
+    val parts = str.toLowerCase().trim().split(" ")
     var leng = 0
-    if (str == "") return -1
-    for (part in parts) {
-        if (part == preWord) return leng - preWord.length - 1
-        else {
-            leng += part.length + 1
-            preWord = part
-        }
-    }
+    for (i in 0 until parts.size - 1)
+        if (parts[i] == parts[i + 1]) return leng else leng += parts[i].length + 1
     return -1
 }
 
@@ -303,19 +283,15 @@ fun fromRoman(roman: String): Int {
     val number = mutableListOf<Int>()
     var answer = 0
     if (roman == "") return -1
-    try {
-        for (romani in roman) {
-            if (romani.toString() in rome) number.add(arabic[rome.indexOf(romani.toString())])
-            else return -1
-        }
-        for (i in 0 until roman.length - 1) {
-            if (number[i] < number[i + 1]) answer -= number[i]
-            else answer += number[i]
-        }
-        answer += number[number.size - 1]
-    } catch (e: NumberFormatException) {
-        return -1
+    for (romani in roman) {
+        if (romani.toString() in rome) number.add(arabic[rome.indexOf(romani.toString())])
+        else return -1
     }
+    for (i in 0 until roman.length - 1) {
+        if (number[i] < number[i + 1]) answer -= number[i]
+        else answer += number[i]
+    }
+    answer += number[number.size - 1]
     return answer
 }
 

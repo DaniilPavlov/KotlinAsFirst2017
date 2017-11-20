@@ -29,12 +29,12 @@ data class Square(val column: Int, val row: Int) {
 
     fun notation(): String {
         return if (inside()) {
-            letter[column - 1] + row.toString()
+            letters[column - 1] + row.toString()
         } else ""
     }
 }
 
-val letter: List<Char> = listOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h')
+val letters: List<Char> = listOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h')
 /**
  * Простая
  *
@@ -43,13 +43,13 @@ val letter: List<Char> = listOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h')
  * Если нотация некорректна, бросить IllegalArgumentException
  */
 fun square(notation: String): Square {
-    if (notation == "" || notation.length != 2 || notation[0] !in letter)
+    if (notation == "" || notation.length != 2 || notation[0] !in letters)
         throw IllegalArgumentException("Incorrect notation $notation: symbol out of ['a' - 'h']")
-    val column = letter.indexOf(notation[0]) + 1
+    val column = letters.indexOf(notation[0]) + 1
     val row = try {
         notation[1].toString().toInt()
     } catch (e: NumberFormatException) {
-        throw IllegalArgumentException("Incorrect notation $notation: symbol out of ['a' - 'h']")
+        throw IllegalArgumentException("Incorrect notation : Not a numeral format")
     }
     return Square(column, row)
 }
