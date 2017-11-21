@@ -168,7 +168,7 @@ fun generateSnake(height: Int, width: Int): Matrix<Int> {
                 currentHeight++
                 currentWidth--
                 currentNumber++
-            } while (currentWidth != -1)
+            } while ((currentHeight != height) && (currentWidth != -1))
             currentHeight = 0
         }
         currentWidth = width - 1
