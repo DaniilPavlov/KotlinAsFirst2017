@@ -157,27 +157,17 @@ fun bestLongJump(jumps: String): Int {
  * При нарушении формата входной строки вернуть -1.
  */
 fun bestHighJump(jumps: String): Int {
-    val emptyAttempts = listOf('-', '%', '+')
     val parts = jumps.split(" ")
     var max = -1
-    var preMax = 0
-    var numberExpected = true
     val ifLineTrue = jumps.matches(Regex("""[\s\d-%+]+"""))
     if (!ifLineTrue) return -1
-    for (part in parts) {
-        if (numberExpected) {
-            try {
-                preMax = part.toInt()
-            } catch (e: NumberFormatException) {
-                return -1
-            }
-            numberExpected = false
-        } else {
-            if (('+' in part) && (preMax >= max)) max = preMax
-            for (symbol in part)
-                if (symbol !in emptyAttempts) return -1
-            numberExpected = true
+    for (i in 0 until parts.size - 1 step 2) {
+        val preMax = try {
+            parts[i].toInt()
+        } catch (e: NumberFormatException) {
+            return -1
         }
+        if (('+' in parts[i + 1]) && (preMax >= max)) max = preMax
     }
     return max
 }
