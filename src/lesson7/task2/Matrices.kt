@@ -334,7 +334,14 @@ fun canOpenLock(key: Matrix<Int>, lock: Matrix<Int>): Triple<Boolean, Int, Int> 
  * Инвертировать заданную матрицу.
  * При инвертировании знак каждого элемента матрицы следует заменить на обратный
  */
-operator fun Matrix<Int>.unaryMinus(): Matrix<Int> = TODO(this.toString())
+operator fun Matrix<Int>.unaryMinus(): Matrix<Int> {
+    for (currentHeight in 0 until this.height) {
+        for (currentWidth in 0 until this.width) {
+            this[currentHeight, currentWidth] *= -1
+        }
+    }
+    return this
+}
 
 /**
  * Средняя
