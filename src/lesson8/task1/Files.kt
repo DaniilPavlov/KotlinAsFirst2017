@@ -206,7 +206,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
                 dictionary[line[indexInLine].toLowerCase()] != null -> {
                     val string = line[indexInLine]
                     val string2 = dictionary[line[indexInLine].toLowerCase()].toString()
-                    if (string == string.toUpperCase()) {
+                    if ((string.toUpperCase() != null) && (string == string.toUpperCase())) {
                         text += string2[0].toUpperCase()
                         for (i in 1 until string2.length) text += string2[i]
                     } else {
@@ -216,7 +216,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
                 dictionary[line[indexInLine].toUpperCase()] != null -> {
                     val string = line[indexInLine]
                     val string2 = dictionary[line[indexInLine].toUpperCase()].toString()
-                    if (string == string.toUpperCase()) {
+                    if ((string.toUpperCase() != null) && (string == string.toUpperCase())) {
                         text += string2[0].toUpperCase()
                         for (i in 1 until string2.length) text += string2[i]
                     } else {
