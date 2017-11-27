@@ -211,7 +211,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
     }
     File(outputName).bufferedWriter().use {
         for (index in 0 until text.length)
-            if (index == 0) it.append(text[0].toUpperCase()) else it.append(text[index])
+            if (index == 0) it.append(text[index].toUpperCase()) else it.append(text[index])
     }
 }
 
