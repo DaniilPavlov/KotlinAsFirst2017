@@ -210,8 +210,8 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
         if (indexOfLine != File(inputName).readLines().size - 1) text += "\n"
     }
     File(outputName).bufferedWriter().use {
-        it.append(text[0].toUpperCase())
-        for (index in 1 until text.length) it.append(text[index])
+        for (index in 1 until text.length)
+            if (index == 0) it.append(text[0].toUpperCase()) else it.append(text[index])
     }
 }
 
