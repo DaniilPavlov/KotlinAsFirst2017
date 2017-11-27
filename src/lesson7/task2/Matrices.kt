@@ -5,6 +5,7 @@ package lesson7.task2
 import lesson7.task1.Matrix
 import lesson7.task1.createMatrix
 import java.lang.Math.*
+import lesson3.task1.factorial
 
 // Все задачи в этом файле требуют наличия реализации интерфейса "Матрица" в Matrix.kt
 
@@ -223,30 +224,18 @@ fun <E> rotate(matrix: Matrix<E>): Matrix<E> {
  */
 fun isLatinSquare(matrix: Matrix<Int>): Boolean {
     if (matrix.height != matrix.width) return false
-    val lineOfNumbers = mutableListOf<Int>()
-    val listOfNumbers = mutableListOf<Int>()
-    var index: Int
-    var widthSum = 0
-    var heightSum = 0
-    for (i in 1..matrix.height) {
-        listOfNumbers.add(0)
-        lineOfNumbers.add(i)
-    }
-    val sum = lineOfNumbers.sum()
-    for (currentHeight in 0 until matrix.height) {
-        for (currentWidth in 0 until matrix.height) {
-            index = lineOfNumbers.indexOf(matrix[currentHeight, currentWidth])
-            if (index == -1) return false
-            listOfNumbers[index]++
-            heightSum += matrix[currentWidth, currentHeight]
-            widthSum += matrix[currentHeight, currentWidth]
+    val long = matrix.height
+    for (i in 0 until long) {
+        var currentFactorialOfHeights = 1
+        var currentFactorialOfWidths = 1
+        for (j in 0 until long) {
+            currentFactorialOfHeights *= matrix[i, j]
+            currentFactorialOfWidths *= matrix[j, i]
         }
-        if ((sum != heightSum) || (sum != widthSum)) return false
-        heightSum = 0
-        widthSum = 0
+        if ((currentFactorialOfHeights != factorial(long).toInt())
+                || (currentFactorialOfWidths != factorial(long).toInt())) return false
     }
-    listOfNumbers.sorted()
-    return (listOfNumbers[0] == listOfNumbers.last())
+    return true
 }
 
 /**

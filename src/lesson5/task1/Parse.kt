@@ -69,10 +69,9 @@ val months = listOf("января", "февраля", "марта", "апрел�
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateStrToDigit(str: String): String {
-    val date: Int
     val parts = str.split(" ")
     if (parts.size != 3) return ""
-    if (parts[1] in months) date = (months.indexOf(parts[1]) + 1) else return ""
+    val date = if (parts[1] in months) (months.indexOf(parts[1]) + 1) else return ""
     return try {
         String.format("%02d.%02d.%d", parts[0].toInt(), date, parts[2].toInt())
     } catch (e: NumberFormatException) {
@@ -88,11 +87,10 @@ fun dateStrToDigit(str: String): String {
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateDigitToStr(digital: String): String {
-    val date: String
     val parts = digital.split(".")
     if (parts.size != 3) return ""
     try {
-        if (parts[1].toInt() in 1..12) date = months[parts[1].toInt() - 1] else return ""
+        val date = if (parts[1].toInt() in 1..12) months[parts[1].toInt() - 1] else return ""
         return String.format("%d %s %d", parts[0].toInt(), date, parts[2].toInt())
     } catch (e: NumberFormatException) {
         return ""
