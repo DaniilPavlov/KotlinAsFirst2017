@@ -202,16 +202,33 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
     var text = ""
     for ((indexOfLine, line) in File(inputName).readLines().withIndex()) {
         for (indexInLine in 0 until line.length)
-            text += when {
-                dictionary[line[indexInLine].toLowerCase()] != null -> dictionary[line[indexInLine].toLowerCase()]
-                dictionary[line[indexInLine].toUpperCase()] != null -> dictionary[line[indexInLine].toUpperCase()]
-                else -> line[indexInLine]
+            when {
+                dictionary[line[indexInLine].toLowerCase()] != null -> {
+                    val string = line[indexInLine]
+                    val string2 = dictionary[line[indexInLine].toLowerCase()].toString()
+                    if (string == string.toUpperCase()) {
+                        text += string2[0].toUpperCase()
+                        for (i in 1 until string2.length) text += string2[i]
+                    } else {
+                        text += string2
+                    }
+                }
+                dictionary[line[indexInLine].toUpperCase()] != null -> {
+                    val string = line[indexInLine]
+                    val string2 = dictionary[line[indexInLine].toUpperCase()].toString()
+                    if (string == string.toUpperCase()) {
+                        text += string2[0].toUpperCase()
+                        for (i in 1 until string2.length) text += string2[i]
+                    } else {
+                        text += string2
+                    }
+                }
+                else -> text += line[indexInLine]
             }
         if (indexOfLine != File(inputName).readLines().size - 1) text += "\n"
     }
     File(outputName).bufferedWriter().use {
-        for (index in 0 until text.length)
-            if (index == 0) it.append(text[index].toUpperCase()) else it.append(text[index])
+        for (index in 0 until text.length) it.append(text[index])
     }
 }
 
