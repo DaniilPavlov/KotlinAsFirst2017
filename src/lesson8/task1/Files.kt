@@ -199,37 +199,7 @@ fun top20Words(inputName: String): Map<String, Int> = TODO()
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: String) {
-    var text = ""
-    for ((indexOfLine, line) in File(inputName).readLines().withIndex()) {
-        for (indexInLine in 0 until line.length)
-            when {
-                dictionary[line[indexInLine].toLowerCase()] != null -> {
-                    val string = line[indexInLine]
-                    val string2 = dictionary[line[indexInLine].toLowerCase()].toString()
-                    if ((string.toUpperCase() != null) && (string == string.toUpperCase())) {
-                        text += string2[0].toUpperCase()
-                        for (i in 1 until string2.length) text += string2[i]
-                    } else {
-                        text += string2
-                    }
-                }
-                dictionary[line[indexInLine].toUpperCase()] != null -> {
-                    val string = line[indexInLine]
-                    val string2 = dictionary[line[indexInLine].toUpperCase()].toString()
-                    if ((string.toUpperCase() != null) && (string == string.toUpperCase())) {
-                        text += string2[0].toUpperCase()
-                        for (i in 1 until string2.length) text += string2[i]
-                    } else {
-                        text += string2
-                    }
-                }
-                else -> text += line[indexInLine]
-            }
-        if (indexOfLine != File(inputName).readLines().size - 1) text += "\n"
-    }
-    File(outputName).bufferedWriter().use {
-        for (index in 0 until text.length) it.append(text[index])
-    }
+    TODO()
 }
 
 /**
