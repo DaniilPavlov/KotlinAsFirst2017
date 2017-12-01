@@ -92,8 +92,9 @@ fun sibilants(inputName: String, outputName: String) {
     File(outputName).bufferedWriter().use {
         val correction = mapOf("Я" to "А", "я" to "а", "Ы" to "И", "ы" to "и", "Ю" to "У", "ю" to "у")
         for ((index, line) in File(inputName).readLines().withIndex()) {
-            if (line.length <= 1) it.write(line)
-            else {
+            if (line.length <= 1) {
+                it.write(line)
+            } else {
                 it.append(line[0])
                 for (letter in 1 until line.length)
                     if ((line[letter - 1] in "ЖжЧчШшЩщ") && (line[letter] in "ЯяЫыЮю")) it.append(correction[line[letter].toString()])
@@ -236,11 +237,10 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     File(outputName).bufferedWriter().use {
         if (listOfWords.size == 0) it.append("")
         if (listOfWords.size == 1) it.append(listOfWords[0])
-        else
-            for ((index, word) in listOfWords.withIndex()) {
-                it.append(word)
-                if (index != listOfWords.size - 1) it.append(", ")
-            }
+        else for ((index, word) in listOfWords.withIndex()) {
+            it.append(word)
+            if (index != listOfWords.size - 1) it.append(", ")
+        }
     }
 }
 
