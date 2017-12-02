@@ -56,8 +56,9 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
     val substringsAndOccurrences = mutableMapOf<String, Int>()
     var text = ""
-    for (line in File(inputName).readLines()) text += line.toLowerCase() + " "
-    for (substring in substrings) substringsAndOccurrences[substring] = text.numberOfOccurrences(substring.toLowerCase())
+    for (line in File(inputName).readText()) text += line.toLowerCase()
+    for (substring in substrings)
+        substringsAndOccurrences[substring] = text.numberOfOccurrences(substring.toLowerCase())
     return substringsAndOccurrences
 }
 
@@ -65,12 +66,11 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
 fun String.numberOfOccurrences(substring: String): Int {
     var currentPosition = 0
     var counter = 0
-    if (indexOf(substring) == -1) return counter
-    while (true) {
-        val indexOfSubstring = indexOf(substring, currentPosition)
-        if (indexOfSubstring == -1) break
+    var indexOfSubstring = indexOf(substring, currentPosition)
+    while (indexOfSubstring != -1) {
         currentPosition = indexOfSubstring + 1
         counter++
+        indexOfSubstring = indexOf(substring, currentPosition)
     }
     return counter
 }
@@ -89,17 +89,21 @@ fun String.numberOfOccurrences(substring: String): Int {
  *
  */
 fun sibilants(inputName: String, outputName: String) {
+    val correction = mapOf("Я" to "А", "я" to "а", "Ы" to "И",
+            "ы" to "и", "Ю" to "У", "ю" to "у")
     File(outputName).bufferedWriter().use {
-        val correction = mapOf("Я" to "А", "я" to "а", "Ы" to "И", "ы" to "и", "Ю" to "У", "ю" to "у")
-        for ((index, line) in File(inputName).readLines().withIndex()) {
+        val inputFile = File(inputName).readLines()
+        for ((index, line) in inputFile.withIndex()) {
             if (line.length <= 1) {
                 it.write(line)
             } else {
                 it.append(line[0])
                 for (letter in 1 until line.length)
-                    if ((line[letter - 1] in "ЖжЧчШшЩщ") && (line[letter] in "ЯяЫыЮю")) it.append(correction[line[letter].toString()])
-                    else it.append(line[letter])
-                if (index != File(inputName).readLines().size - 1) it.newLine()
+                    if ((line[letter - 1] in "ЖжЧчШшЩщ") && (line[letter] in "ЯяЫыЮю"))
+                        it.append(correction[line[letter].toString()])
+                    else
+                        it.append(line[letter])
+                if (index != inputFile.size - 1) it.newLine()
             }
         }
     }
@@ -230,16 +234,19 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     val listOfWords = mutableListOf<String>()
     var maxLength = -1
-    for (word in File(inputName).readLines())
+    val inputFile = File(inputName).readLines()
+    for (word in inputFile)
         if ((word.ifLettersAreDifferent()) && (word.length > maxLength)) maxLength = word.length
-    for (word in File(inputName).readLines())
+    for (word in inputFile)
         if ((word.ifLettersAreDifferent()) && (word.length == maxLength)) listOfWords += word
+
+
     File(outputName).bufferedWriter().use {
-        if (listOfWords.size == 0) it.append("")
-        if (listOfWords.size == 1) it.append(listOfWords[0])
-        else for ((index, word) in listOfWords.withIndex()) {
-            it.append(word)
-            if (index != listOfWords.size - 1) it.append(", ")
+        when {
+            listOfWords.size == 0 -> it.append("")
+            listOfWords.size == 1 -> it.append(listOfWords[0])
+            else -> for (index in 0 until listOfWords.size)
+                if (index != listOfWords.size - 1) it.append(listOfWords.joinToString(", "))
         }
     }
 }

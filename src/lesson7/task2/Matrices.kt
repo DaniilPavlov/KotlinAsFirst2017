@@ -225,6 +225,7 @@ fun <E> rotate(matrix: Matrix<E>): Matrix<E> {
 fun isLatinSquare(matrix: Matrix<Int>): Boolean {
     if (matrix.height != matrix.width) return false
     val long = matrix.height
+    val factorialOfLong = factorial(long).toInt()
     for (i in 0 until long) {
         var currentFactorialOfHeights = 1
         var currentFactorialOfWidths = 1
@@ -232,8 +233,8 @@ fun isLatinSquare(matrix: Matrix<Int>): Boolean {
             currentFactorialOfHeights *= matrix[i, j]
             currentFactorialOfWidths *= matrix[j, i]
         }
-        if ((currentFactorialOfHeights != factorial(long).toInt())
-                || (currentFactorialOfWidths != factorial(long).toInt())) return false
+        if ((currentFactorialOfHeights != factorialOfLong)
+                || (currentFactorialOfWidths != factorialOfLong)) return false
     }
     return true
 }
